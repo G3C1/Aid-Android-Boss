@@ -15,6 +15,11 @@ object Dependency {
         const val COMPOSE_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Versions.COMPOSE}"
     }
 
+    object Google {
+        const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
+        const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
+    }
+
     object Test {
         const val JUNIT = "junit:junit:4.13.2"
     }
@@ -26,5 +31,12 @@ object Dependency {
 
     object ComposeTest {
         const val COMPOSE_JUNIT = "androidx.compose.ui:ui-test-junit4:${Versions.COMPOSE}"
+    }
+
+    object Libraries {
+        const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
+        const val RETROFIT_CONVERTER_GSON =
+            "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
+        const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
     }
 }
