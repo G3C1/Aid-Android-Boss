@@ -1,4 +1,4 @@
-package com.g3c1.aide
+package com.g3c1.aide.feature_splash.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
