@@ -1,4 +1,4 @@
-package com.g3c1.aide
+package com.g3c1.aide.feature_splash.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.g3c1.aide.ui.theme.AideAndroidBossTheme
 
-class MainActivity : ComponentActivity() {
+class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
