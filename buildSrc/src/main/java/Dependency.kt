@@ -18,6 +18,8 @@ object Dependency {
     object Google {
         const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
         const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
+        const val SYSTEM_UI_CONTROLLER =
+            "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
     }
 
     object Test {
