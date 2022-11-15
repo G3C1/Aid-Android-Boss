@@ -1,6 +1,7 @@
 package com.g3c1.aide.feature_account.presentation.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -14,17 +15,19 @@ import androidx.compose.ui.unit.sp
 import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
 import com.g3c1.aide.feature_account.presentation.ui.components.InputField
 import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
+import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun LoginPage() {
+fun LoginPage(viewModel: AccountViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        val userId = remember {
+        val id = remember {
             mutableStateOf("")
         }
         val password = remember {
@@ -45,11 +48,11 @@ fun LoginPage() {
             color = Color.Black
         )
         InputField(
-            text = userId.value,
+            text = id.value,
             hint = "아이디를 입력해주세요.",
             isError = false,
             onValueChange = {
-                userId.value = it
+                id.value = it
             }
         )
         InputField(
@@ -63,6 +66,9 @@ fun LoginPage() {
         OnClickText(firstText = "처음이신가요? ", orangeText = "회원가입", lastText = "하러가기") {
 
         }
-        AccountButton(onClick = { /*TODO*/ }, text = "로그인")
+        AccountButton(
+            onClick = { viewModel.login(id = id.value, password = password.value) },
+            text = "로그인"
+        )
     }
 }

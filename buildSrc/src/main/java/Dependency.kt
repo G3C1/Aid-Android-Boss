@@ -1,8 +1,11 @@
 object Dependency {
 
     object AndroidX {
+        const val APP_COMPAT = "androidx.appcompat:appcompat:1.4.1"
         const val CORE_KTX = "androidx.core:core-ktx:1.7.0"
         const val LIFECYCLE = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+        const val LIFECYCLE_VIEWMODEL_COMPOSE =
+            "androidx.lifecycle:lifecycle-viewmodel-compose:2.3.1"
     }
 
     object Compose {
@@ -13,6 +16,8 @@ object Dependency {
         const val COMPOSE_MATERIAL = "androidx.compose.material:material:1.1.1"
         const val COMPOSE_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
         const val COMPOSE_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Versions.COMPOSE}"
+        const val COMPOSE_LIVEDATA = "androidx.compose.runtime:runtime-livedata:${Versions.COMPOSE}"
+        const val COMPOSE_NAV = "androidx.navigation:navigation-compose:2.5.1"
     }
 
     object Google {
