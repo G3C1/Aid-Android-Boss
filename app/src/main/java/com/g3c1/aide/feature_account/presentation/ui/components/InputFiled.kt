@@ -57,7 +57,7 @@ fun InputField(
                 fontWeight = FontWeight.Medium
             ),
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text),
             maxLines = 1,
             isError = isError
         )

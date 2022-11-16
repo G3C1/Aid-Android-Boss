@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.g3c1.aide.feature_account.presentation.ui.screen.LoginPage
+import com.g3c1.aide.feature_account.presentation.ui.screen.RealNameScreen
 import com.g3c1.aide.feature_account.presentation.ui.screen.SignUpScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,9 +53,18 @@ class AccountActivity : ComponentActivity() {
                                 }
                             },
                             goRealNameScreen = {
-                                navController.navigate("")
+                                navController.navigate("RealNameScreen")
                             }
                         )
+                    }
+                    composable("RealNameScreen") {
+                        RealNameScreen(viewModel = viewModel(LocalContext.current as AccountActivity)) {
+                            navController.navigate("LoginScreen") {
+                                popUpTo("LoginScreen") {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     }
                 }
             }
