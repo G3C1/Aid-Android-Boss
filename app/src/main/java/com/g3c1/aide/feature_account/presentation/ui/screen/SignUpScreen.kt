@@ -111,14 +111,8 @@ fun SignUpScreen(
     }
     AccountButton(
         text = "다음",
-        errorMsg = "오류 메세지를 확인해주세요.",
-        isError = idIsWrong.value || passwordIsWrong.value || passwordIsSame.value
+        isError = idIsWrong.value || passwordIsWrong.value || passwordIsSame.value || id.value.isEmpty() || password.value.isEmpty() || confirmationPassword.value.isEmpty()
     ) {
-        idIsWrong.value = id.value.isEmpty()
-        passwordIsWrong.value = password.value.isEmpty()
-        passwordIsSame.value = confirmationPassword.value.isEmpty()
-        if (!idIsWrong.value && !passwordIsWrong.value && !passwordIsSame.value) {
-
-        }
+        goRealNameScreen()
     }
 }

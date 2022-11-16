@@ -52,13 +52,12 @@ class AccountActivity : ComponentActivity() {
                                 }
                             },
                             goRealNameScreen = {
-
+                                navController.navigate("")
                             }
                         )
                     }
                 }
             }
-
         }
     }
 }

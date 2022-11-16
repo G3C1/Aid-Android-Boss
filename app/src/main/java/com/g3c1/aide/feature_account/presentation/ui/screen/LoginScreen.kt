@@ -28,12 +28,6 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
     val password = remember {
         mutableStateOf("")
     }
-    val idIsWrong = remember {
-        mutableStateOf(false)
-    }
-    val passwordIsWrong = remember {
-        mutableStateOf(false)
-    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,7 +52,7 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
         InputField(
             text = id.value,
             hint = "아이디를 입력해주세요.",
-            isError = idIsWrong.value,
+            isError = false,
             onValueChange = {
                 id.value = it
             },
@@ -68,7 +62,7 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
         InputField(
             text = password.value,
             hint = "비밀번호를 입력해주세요.",
-            isError = passwordIsWrong.value,
+            isError = false,
             onValueChange = {
                 password.value = it
             },
@@ -84,13 +78,8 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
     }
     AccountButton(
         text = "로그인",
-        errorMsg = "아이디 혹은 비밀번호를 확인해주세요.",
-        isError = idIsWrong.value || passwordIsWrong.value
+        isError = id.value.isEmpty() && id.value.isEmpty(),
     ) {
-        idIsWrong.value = id.value.isEmpty()
-        passwordIsWrong.value = password.value.isEmpty()
-        if (!idIsWrong.value && !passwordIsWrong.value) {
 
-        }
     }
 }
