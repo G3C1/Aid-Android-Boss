@@ -27,7 +27,7 @@ fun AccountButton(onClick: () -> Unit, text: String) {
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.18f),
+                .fillMaxHeight(0.09f),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Orange,
                 contentColor = Color.White

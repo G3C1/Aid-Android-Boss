@@ -21,19 +21,19 @@ import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun LoginPage(viewModel: AccountViewModel) {
+fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
+    val id = remember {
+        mutableStateOf("")
+    }
+    val password = remember {
+        mutableStateOf("")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val id = remember {
-            mutableStateOf("")
-        }
-        val password = remember {
-            mutableStateOf("")
-        }
         PretendardText(
             text = "로그인",
             fontSize = 30.sp,
@@ -48,31 +48,35 @@ fun LoginPage(viewModel: AccountViewModel) {
             fontWeight = FontWeight.Normal,
             color = Color.Black
         )
-        Spacer(modifier = Modifier.size(36.dp))
+        Spacer(modifier = Modifier.size(30.dp))
         InputField(
             text = id.value,
             hint = "아이디를 입력해주세요.",
             isError = false,
             onValueChange = {
                 id.value = it
-            }
+            },
+            errorMsg = null
         )
-        Spacer(modifier = Modifier.size(12.dp))
         InputField(
             text = password.value,
             hint = "비밀번호를 입력해주세요.",
             isError = false,
             onValueChange = {
                 password.value = it
-            }
+            },
+            errorMsg = null
         )
         Spacer(modifier = Modifier.size(16.dp))
-        OnClickText(firstText = "처음이신가요? ", orangeText = "회원가입", lastText = "하러가기") {
-
-        }
-        AccountButton(
-            onClick = { viewModel.login(id = id.value, password = password.value) },
-            text = "로그인"
+        OnClickText(
+            firstText = "처음이신가요? ",
+            orangeText = "회원가입",
+            lastText = "하러가기",
+            onClick = goSignUpScreen
         )
     }
+    AccountButton(
+        onClick = { viewModel.login(id = id.value, password = password.value) },
+        text = "로그인"
+    )
 }
