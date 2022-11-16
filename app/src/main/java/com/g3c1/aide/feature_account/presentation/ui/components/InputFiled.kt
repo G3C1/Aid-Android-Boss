@@ -1,9 +1,6 @@
 package com.g3c1.aide.feature_account.presentation.ui.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -25,17 +22,9 @@ fun InputField(
     hint: String,
     onValueChange: (String) -> Unit,
     isError: Boolean,
-    errorMsg: String?
+    errorMsg: String
 ) {
     Column {
-        Spacer(modifier = Modifier.size(2.dp))
-        PretendardText(
-            text = if (isError) errorMsg!! else "",
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.Red
-        )
-        Spacer(modifier = Modifier.size(2.dp))
         OutlinedTextField(
             value = text,
             onValueChange = onValueChange,
@@ -46,25 +35,38 @@ fun InputField(
                 textColor = Gray2,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = Orange
-        ),
-        placeholder = {
-            Text(
-                text = hint,
+                disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Red,
+                errorCursorColor = Red,
+                cursorColor = Orange
+            ),
+            placeholder = {
+                Text(
+                    text = hint,
+                    fontFamily = Font.pretendard,
+                    fontWeight = FontWeight.Medium,
+                    color = if (isError) Red else Gray2
+                )
+            },
+            textStyle = TextStyle(
+                fontSize = 16.sp,
                 fontFamily = Font.pretendard,
-                fontWeight = FontWeight.Medium,
-                color = Gray2
-            )
-        },
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            fontFamily = Font.pretendard,
-            fontWeight = FontWeight.Medium
-        ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        maxLines = 1,
-        isError = isError
-    )
+                fontWeight = FontWeight.Medium
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            maxLines = 1,
+            isError = isError
+        )
+        if (isError) {
+            Spacer(modifier = Modifier.size(4.dp))
+            Box(modifier = Modifier.padding(start = 11.dp)) {
+                PretendardText(
+                    text = errorMsg,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Red
+                )
+            }
+        }
     }
 }

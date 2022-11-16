@@ -29,30 +29,30 @@ fun SignUpScreen(
     goLoginScreen: () -> Unit,
     goRealNameScreen: () -> Unit
 ) {
+    val id = remember {
+        mutableStateOf("")
+    }
+    val password = remember {
+        mutableStateOf("")
+    }
+    val confirmationPassword = remember {
+        mutableStateOf("")
+    }
+    val idIsWrong = remember {
+        mutableStateOf(false)
+    }
+    val passwordIsWrong = remember {
+        mutableStateOf(false)
+    }
+    val passwordIsSame = remember {
+        mutableStateOf(false)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val id = remember {
-            mutableStateOf("")
-        }
-        val password = remember {
-            mutableStateOf("")
-        }
-        val confirmationPassword = remember {
-            mutableStateOf("")
-        }
-        val idProtocol = remember {
-            mutableStateOf(false)
-        }
-        val passwordProtocol = remember {
-            mutableStateOf(false)
-        }
-        val passwordIsSame = remember {
-            mutableStateOf(false)
-        }
         PretendardText(
             text = "회원가입",
             fontSize = 30.sp,
@@ -67,27 +67,29 @@ fun SignUpScreen(
             fontWeight = FontWeight.Normal,
             color = Color.Black
         )
-        Spacer(modifier = Modifier.size(33.dp))
+        Spacer(modifier = Modifier.size(36.dp))
         InputField(
             text = id.value,
             hint = "아이디를 입력해주세요.",
-            isError = idProtocol.value,
+            isError = idIsWrong.value,
             onValueChange = {
                 id.value = it
-                idProtocol.value = checkIdPattern(id.value)
+                idIsWrong.value = checkIdPattern(id.value)
             },
             errorMsg = "아이디는 8글자 이상이여야 합니다."
         )
+        Spacer(modifier = Modifier.size(16.dp))
         InputField(
             text = password.value,
             hint = "비밀번호를 입력해주세요.",
-            isError = passwordProtocol.value,
+            isError = passwordIsWrong.value,
             onValueChange = {
                 password.value = it
-                passwordProtocol.value = checkPasswordPattern(password.value)
+                passwordIsWrong.value = checkPasswordPattern(password.value)
             },
             errorMsg = "비밀번호는 영문,숫자,특수문자포함 8~20글자여야 합니다."
         )
+        Spacer(modifier = Modifier.size(12.dp))
         InputField(
             text = confirmationPassword.value,
             hint = "입력하신 비밀번호를 한번 더 입력해주세요.",
@@ -108,7 +110,13 @@ fun SignUpScreen(
         )
     }
     AccountButton(
-        onClick = goRealNameScreen,
         text = "다음"
-    )
+    ) {
+        idIsWrong.value = id.value.isEmpty()
+        passwordIsWrong.value = password.value.isEmpty()
+        passwordIsSame.value = confirmationPassword.value.isEmpty()
+        if (!idIsWrong.value && !passwordIsWrong.value && !passwordIsSame.value) {
+
+        }
+    }
 }

@@ -15,7 +15,7 @@ import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun AccountButton(onClick: () -> Unit, text: String) {
+fun AccountButton(text: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
