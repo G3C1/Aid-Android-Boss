@@ -1,34 +1,38 @@
 object Dependency {
 
     object AndroidX {
-        const val CORE_KTX = "androidx.core:core-ktx:1.7.0"
-        const val LIFECYCLE = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+        const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
+        const val CORE_KTX = "androidx.core:core-ktx:${Versions.CORE_KTX}"
+        const val LIFECYCLE = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE}"
     }
 
     object Compose {
-        const val ACTIVITY_COMPOSE = "androidx.activity:activity-compose:1.3.1"
+        const val ACTIVITY_COMPOSE =
+            "androidx.activity:activity-compose:${Versions.ACTIVITY_COMPOSE}"
         const val COMPOSE = "androidx.compose.ui:ui:${Versions.COMPOSE}"
         const val COMPOSE_TOOLING_PREVIEW =
             "androidx.compose.ui:ui-tooling-preview:${Versions.COMPOSE}"
-        const val COMPOSE_MATERIAL = "androidx.compose.material:material:1.1.1"
+        const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
         const val COMPOSE_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
         const val COMPOSE_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Versions.COMPOSE}"
+        const val COMPOSE_LIVEDATA = "androidx.compose.runtime:runtime-livedata:${Versions.COMPOSE}"
+        const val COMPOSE_NAV = "androidx.navigation:navigation-compose:${Versions.COMPOSE_NAV}"
     }
 
     object Google {
         const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
         const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
         const val SYSTEM_UI_CONTROLLER =
-            "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
+            "com.google.accompanist:accompanist-systemuicontroller:${Versions.SYSTEM_UI_CONTROLLER}"
     }
 
     object Test {
-        const val JUNIT = "junit:junit:4.13.2"
+        const val JUNIT = "junit:junit:${Versions.JUNIT}"
     }
 
     object AndroidTest {
-        const val ANDROID_JUNIT = "androidx.test.ext:junit:1.1.3"
-        const val ANDROID_ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
+        const val ANDROID_JUNIT = "androidx.test.ext:junit:${Versions.ANDROID_JUNIT}"
+        const val ANDROID_ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
     }
 
     object ComposeTest {

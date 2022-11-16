@@ -53,11 +53,14 @@ android {
 
 dependencies {
     implementation(Dependency.AndroidX.CORE_KTX)
+    implementation(Dependency.AndroidX.APP_COMPAT)
     implementation(Dependency.AndroidX.LIFECYCLE)
     implementation(Dependency.Compose.ACTIVITY_COMPOSE)
     implementation(Dependency.Compose.COMPOSE)
+    implementation(Dependency.Compose.COMPOSE_LIVEDATA)
     implementation(Dependency.Compose.COMPOSE_TOOLING_PREVIEW)
     implementation(Dependency.Compose.COMPOSE_MATERIAL)
+    implementation(Dependency.Compose.COMPOSE_NAV)
     testImplementation(Dependency.Test.JUNIT)
     androidTestImplementation(Dependency.AndroidTest.ANDROID_JUNIT)
     androidTestImplementation(Dependency.AndroidTest.ANDROID_ESPRESSO)
