@@ -83,7 +83,9 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
         )
     }
     AccountButton(
-        text = "로그인"
+        text = "로그인",
+        errorMsg = "아이디 혹은 비밀번호를 확인해주세요.",
+        isError = idIsWrong.value || passwordIsWrong.value
     ) {
         idIsWrong.value = id.value.isEmpty()
         passwordIsWrong.value = password.value.isEmpty()

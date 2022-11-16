@@ -13,9 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText
+import com.g3c1.aide.ui.theme.Red
 
 @Composable
-fun AccountButton(text: String, onClick: () -> Unit) {
+fun AccountButton(text: String, errorMsg: String, isError: Boolean, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -23,6 +24,13 @@ fun AccountButton(text: String, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
+        PretendardText(
+            text = if (isError) errorMsg else "",
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Normal,
+            color = Red
+        )
+        Spacer(modifier = Modifier.size(12.dp))
         Button(
             onClick = onClick,
             modifier = Modifier

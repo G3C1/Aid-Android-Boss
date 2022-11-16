@@ -110,7 +110,9 @@ fun SignUpScreen(
         )
     }
     AccountButton(
-        text = "다음"
+        text = "다음",
+        errorMsg = "오류 메세지를 확인해주세요.",
+        isError = idIsWrong.value || passwordIsWrong.value || passwordIsSame.value
     ) {
         idIsWrong.value = id.value.isEmpty()
         passwordIsWrong.value = password.value.isEmpty()
