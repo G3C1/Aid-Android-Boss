@@ -2,6 +2,7 @@ package com.g3c1.aide.feature_account.presentation.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.g3c1.aide.ui.theme.Font
@@ -45,6 +47,7 @@ fun InputField(text: String, hint: String, onValueChange: (String) -> Unit, isEr
             fontFamily = Font.pretendard,
             fontWeight = FontWeight.Medium
         ),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         maxLines = 1,
         isError = isError
     )

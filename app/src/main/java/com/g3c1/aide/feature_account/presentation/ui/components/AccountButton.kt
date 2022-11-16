@@ -20,14 +20,14 @@ fun AccountButton(onClick: () -> Unit, text: String) {
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 15.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom
     ) {
         Button(
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.1f),
+                .fillMaxHeight(0.18f),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Orange,
                 contentColor = Color.White
