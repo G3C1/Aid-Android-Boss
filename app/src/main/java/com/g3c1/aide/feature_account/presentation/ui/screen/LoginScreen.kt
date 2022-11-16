@@ -56,7 +56,8 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
             onValueChange = {
                 id.value = it
             },
-            errorMsg = "아이디를 다시 확인해주세요."
+            errorMsg = "",
+            isPassword = false
         )
         Spacer(modifier = Modifier.size(12.dp))
         InputField(
@@ -66,7 +67,8 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
             onValueChange = {
                 password.value = it
             },
-            errorMsg = "비밀번호를 다시 확인해주세요."
+            errorMsg = "",
+            isPassword = true
         )
         Spacer(modifier = Modifier.size(16.dp))
         OnClickText(

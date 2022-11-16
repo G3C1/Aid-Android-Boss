@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.g3c1.aide.ui.theme.Gray2
+import com.g3c1.aide.ui.theme.DarkGray
 import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText
 
@@ -34,7 +34,7 @@ fun AccountButton(
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.09f),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = if (!isError) Orange else Gray2,
+                backgroundColor = if (!isError) Orange else DarkGray,
                 contentColor = Color.White
             ),
             shape = RoundedCornerShape(12.dp),

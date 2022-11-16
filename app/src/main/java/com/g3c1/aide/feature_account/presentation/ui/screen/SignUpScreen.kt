@@ -76,7 +76,8 @@ fun SignUpScreen(
                 id.value = it
                 idIsWrong.value = checkIdPattern(id.value)
             },
-            errorMsg = "아이디는 8글자 이상이여야 합니다."
+            errorMsg = "아이디는 8글자 이상이여야 합니다.",
+            isPassword = false
         )
         Spacer(modifier = Modifier.size(16.dp))
         InputField(
@@ -87,7 +88,8 @@ fun SignUpScreen(
                 password.value = it
                 passwordIsWrong.value = checkPasswordPattern(password.value)
             },
-            errorMsg = "비밀번호는 영문,숫자,특수문자포함 8~20글자여야 합니다."
+            errorMsg = "비밀번호는 영문,숫자,특수문자포함 8~20글자여야 합니다.",
+            isPassword = true
         )
         Spacer(modifier = Modifier.size(12.dp))
         InputField(
@@ -99,7 +101,8 @@ fun SignUpScreen(
                 passwordIsSame.value =
                     checkPasswordIsSame(password.value, confirmationPassword.value)
             },
-            errorMsg = "비밀번호가 일치하지 않습니다."
+            errorMsg = "비밀번호가 일치하지 않습니다.",
+            isPassword = true
         )
         Spacer(modifier = Modifier.size(16.dp))
         OnClickText(

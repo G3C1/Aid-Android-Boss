@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.g3c1.aide.ui.theme.*
@@ -22,7 +24,8 @@ fun InputField(
     hint: String,
     onValueChange: (String) -> Unit,
     isError: Boolean,
-    errorMsg: String
+    errorMsg: String,
+    isPassword: Boolean
 ) {
     Column {
         OutlinedTextField(
@@ -53,6 +56,7 @@ fun InputField(
                 fontFamily = Font.pretendard,
                 fontWeight = FontWeight.Medium
             ),
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             maxLines = 1,
             isError = isError
