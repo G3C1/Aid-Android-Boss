@@ -3,10 +3,13 @@ package com.g3c1.aide.feature_account.presentation.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -27,6 +30,9 @@ fun InputField(
     errorMsg: String,
     isPassword: Boolean
 ) {
+    val passwordVisible = remember {
+        mutableStateOf(isPassword)
+    }
     Column {
         OutlinedTextField(
             value = text,
@@ -54,10 +60,23 @@ fun InputField(
             textStyle = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = Font.pretendard,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = if (isError) Red else Gray2
             ),
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            visualTransformation = if (passwordVisible.value) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text),
+            trailingIcon = {
+                val image = if (passwordVisible.value)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+                val description = if (passwordVisible.value) "Hide password" else "Show password"
+
+                if (isPassword) {
+                    IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+                        Icon(imageVector = image, description)
+                    }
+                }
+            },
             maxLines = 1,
             isError = isError
         )

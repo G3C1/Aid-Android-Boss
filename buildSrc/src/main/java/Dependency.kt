@@ -17,6 +17,8 @@ object Dependency {
         const val COMPOSE_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Versions.COMPOSE}"
         const val COMPOSE_LIVEDATA = "androidx.compose.runtime:runtime-livedata:${Versions.COMPOSE}"
         const val COMPOSE_NAV = "androidx.navigation:navigation-compose:${Versions.COMPOSE_NAV}"
+        const val COMPOSE_ICON =
+            "androidx.compose.material:material-icons-extended:${Versions.COMPOSE}"
     }
 
     object Google {
