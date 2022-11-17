@@ -64,7 +64,7 @@ fun RealNameScreen(viewModel: AccountViewModel, goLoginScreen: () -> Unit) {
         )
     }
     AccountButton(
-        text = "로그인",
+        text = "가입",
         isError = name.value.isEmpty()
     ) {
 
