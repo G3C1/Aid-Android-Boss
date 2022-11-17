@@ -53,7 +53,11 @@ class AccountActivity : ComponentActivity() {
                                 }
                             },
                             goRealNameScreen = {
-                                navController.navigate("RealNameScreen")
+                                navController.navigate("RealNameScreen") {
+                                    popUpTo("RealNameScreen") {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         )
                     }

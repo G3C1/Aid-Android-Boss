@@ -73,7 +73,7 @@ fun InputField(
 
                 if (isPassword) {
                     IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                        Icon(imageVector = image, description)
+                        Icon(imageVector = image, description, tint = Gray2)
                     }
                 }
             },
