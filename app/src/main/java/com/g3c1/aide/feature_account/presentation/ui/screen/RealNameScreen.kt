@@ -21,11 +21,8 @@ import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
-    val id = remember {
-        mutableStateOf("")
-    }
-    val password = remember {
+fun RealNameScreen(viewModel: AccountViewModel, goLoginScreen: () -> Unit) {
+    val name = remember {
         mutableStateOf("")
     }
     Column(
@@ -35,52 +32,40 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PretendardText(
-            text = "로그인",
+            text = "회원가입",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
         )
         Spacer(modifier = Modifier.size(12.dp))
         PretendardText(
-            text = "이앱은 AiD 사장님들을 위한 \n" +
-                    "가게 관리앱이에요.",
+            text = "보안을 위해서 실명을 입력해주세요.",
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Black
         )
         Spacer(modifier = Modifier.size(36.dp))
         InputField(
-            text = id.value,
-            hint = "아이디를 입력해주세요.",
+            text = name.value,
+            hint = "실명을 입력해주세요.",
             isError = false,
             onValueChange = {
-                id.value = it
+                name.value = it
             },
             errorMsg = "",
             isPassword = false
         )
-        Spacer(modifier = Modifier.size(12.dp))
-        InputField(
-            text = password.value,
-            hint = "비밀번호를 입력해주세요.",
-            isError = false,
-            onValueChange = {
-                password.value = it
-            },
-            errorMsg = "",
-            isPassword = true
-        )
         Spacer(modifier = Modifier.size(16.dp))
         OnClickText(
-            firstText = "처음이신가요? ",
-            orangeText = "회원가입",
+            firstText = "기존 회원이신가요? ",
+            orangeText = "로그인",
             lastText = "하러가기",
-            onClick = goSignUpScreen
+            onClick = goLoginScreen
         )
     }
     AccountButton(
-        text = "로그인",
-        isError = id.value.isEmpty() && id.value.isEmpty(),
+        text = "가입",
+        isError = name.value.isEmpty()
     ) {
 
     }

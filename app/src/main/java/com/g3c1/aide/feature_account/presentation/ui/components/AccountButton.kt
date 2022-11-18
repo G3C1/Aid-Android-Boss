@@ -11,11 +11,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.g3c1.aide.ui.theme.DarkGray
 import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun AccountButton(onClick: () -> Unit, text: String) {
+fun AccountButton(
+    text: String,
+    isError: Boolean,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -27,12 +32,13 @@ fun AccountButton(onClick: () -> Unit, text: String) {
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.18f),
+                .fillMaxHeight(0.09f),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Orange,
+                backgroundColor = if (!isError) Orange else DarkGray,
                 contentColor = Color.White
             ),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+            enabled = !isError
         ) {
             PretendardText(
                 text = text,

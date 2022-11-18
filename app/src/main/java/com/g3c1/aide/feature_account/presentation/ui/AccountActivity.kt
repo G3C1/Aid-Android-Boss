@@ -12,7 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.g3c1.aide.feature_account.presentation.ui.screen.LoginPage
+import com.g3c1.aide.feature_account.presentation.ui.screen.RealNameScreen
+import com.g3c1.aide.feature_account.presentation.ui.screen.SignUpScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,13 +28,50 @@ class AccountActivity : ComponentActivity() {
         setContent {
             val systemUiController = rememberSystemUiController()
             systemUiController.setSystemBarsColor(Color.White)
+            val navController = rememberNavController()
             Column(modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)) {
                 Spacer(modifier = Modifier.fillMaxHeight(0.2f))
-                LoginPage(viewModel = viewModel(LocalContext.current as AccountActivity))
+                NavHost(navController = navController, startDestination = "LoginScreen") {
+                    composable("LoginScreen") {
+                        LoginPage(viewModel = viewModel(LocalContext.current as AccountActivity)) {
+                            navController.navigate("SignUpScreen") {
+                                popUpTo("SignUpScreen") {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                    composable("SignUpScreen") {
+                        SignUpScreen(viewModel = viewModel(LocalContext.current as AccountActivity),
+                            goLoginScreen = {
+                                navController.navigate("LoginScreen") {
+                                    popUpTo("LoginScreen") {
+                                        inclusive = true
+                                    }
+                                }
+                            },
+                            goRealNameScreen = {
+                                navController.navigate("RealNameScreen") {
+                                    popUpTo("RealNameScreen") {
+                                        inclusive = true
+                                    }
+                                }
+                            }
+                        )
+                    }
+                    composable("RealNameScreen") {
+                        RealNameScreen(viewModel = viewModel(LocalContext.current as AccountActivity)) {
+                            navController.navigate("LoginScreen") {
+                                popUpTo("LoginScreen") {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    }
+                }
             }
-
         }
     }
 }

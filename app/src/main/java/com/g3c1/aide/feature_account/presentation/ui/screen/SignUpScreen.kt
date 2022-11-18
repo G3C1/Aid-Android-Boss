@@ -17,16 +17,35 @@ import androidx.compose.ui.unit.sp
 import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
 import com.g3c1.aide.feature_account.presentation.ui.components.InputField
 import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
+import com.g3c1.aide.feature_account.presentation.utils.Utils.checkIdPattern
+import com.g3c1.aide.feature_account.presentation.utils.Utils.checkPasswordIsSame
+import com.g3c1.aide.feature_account.presentation.utils.Utils.checkPasswordPattern
 import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
+fun SignUpScreen(
+    viewModel: AccountViewModel,
+    goLoginScreen: () -> Unit,
+    goRealNameScreen: () -> Unit
+) {
     val id = remember {
         mutableStateOf("")
     }
     val password = remember {
         mutableStateOf("")
+    }
+    val confirmationPassword = remember {
+        mutableStateOf("")
+    }
+    val idIsWrong = remember {
+        mutableStateOf(false)
+    }
+    val passwordIsWrong = remember {
+        mutableStateOf(false)
+    }
+    val passwordIsSame = remember {
+        mutableStateOf(false)
     }
     Column(
         modifier = Modifier
@@ -35,15 +54,15 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PretendardText(
-            text = "로그인",
+            text = "회원가입",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
         )
         Spacer(modifier = Modifier.size(12.dp))
         PretendardText(
-            text = "이앱은 AiD 사장님들을 위한 \n" +
-                    "가게 관리앱이에요.",
+            text = "사용하실 아이디와 비밀번호를 \n" +
+                    "입력해주세요.",
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Black
@@ -52,36 +71,51 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
         InputField(
             text = id.value,
             hint = "아이디를 입력해주세요.",
-            isError = false,
+            isError = idIsWrong.value,
             onValueChange = {
                 id.value = it
+                idIsWrong.value = checkIdPattern(id.value)
             },
-            errorMsg = "",
+            errorMsg = "아이디는 8글자 이상이여야 합니다.",
             isPassword = false
         )
-        Spacer(modifier = Modifier.size(12.dp))
+        Spacer(modifier = Modifier.size(16.dp))
         InputField(
             text = password.value,
             hint = "비밀번호를 입력해주세요.",
-            isError = false,
+            isError = passwordIsWrong.value,
             onValueChange = {
                 password.value = it
+                passwordIsWrong.value = checkPasswordPattern(password.value)
             },
-            errorMsg = "",
+            errorMsg = "비밀번호는 영문,숫자,특수문자포함 8~20글자여야 합니다.",
+            isPassword = true
+        )
+        Spacer(modifier = Modifier.size(12.dp))
+        InputField(
+            text = confirmationPassword.value,
+            hint = "입력하신 비밀번호를 한번 더 입력해주세요.",
+            isError = passwordIsSame.value,
+            onValueChange = {
+                confirmationPassword.value = it
+                passwordIsSame.value =
+                    checkPasswordIsSame(password.value, confirmationPassword.value)
+            },
+            errorMsg = "비밀번호가 일치하지 않습니다.",
             isPassword = true
         )
         Spacer(modifier = Modifier.size(16.dp))
         OnClickText(
-            firstText = "처음이신가요? ",
-            orangeText = "회원가입",
+            firstText = "기존 회원이신가요? ",
+            orangeText = "로그인",
             lastText = "하러가기",
-            onClick = goSignUpScreen
+            onClick = goLoginScreen
         )
     }
     AccountButton(
-        text = "로그인",
-        isError = id.value.isEmpty() && id.value.isEmpty(),
+        text = "다음",
+        isError = idIsWrong.value || passwordIsWrong.value || passwordIsSame.value || id.value.isEmpty() || password.value.isEmpty() || confirmationPassword.value.isEmpty()
     ) {
-
+        goRealNameScreen()
     }
 }
