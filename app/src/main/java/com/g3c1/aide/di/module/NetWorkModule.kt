@@ -1,6 +1,6 @@
 package com.g3c1.aide.di.module
 
-import com.g3c1.aide.di.utils.FakeUrl
+import com.g3c1.aide.di.utils.BaseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +34,7 @@ object NetWorkModule {
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(FakeUrl.BASE_URL)
+            .baseUrl(BaseUrl.BASE_URL)
             .client(okHttpClient)
             .client(provideOkhttpClient())
             .addConverterFactory(gsonConverterFactory)
