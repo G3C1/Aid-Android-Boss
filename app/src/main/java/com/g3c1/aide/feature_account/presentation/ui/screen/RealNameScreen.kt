@@ -86,10 +86,10 @@ private fun signUp(lifecycleScope: LifecycleCoroutineScope, viewModel: AccountVi
         viewModel.signUpRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("SignUp", "성공!")
+                    Log.d("SignUpRes", "성공!")
                 }
                 is ApiState.Error -> {
-                    Log.e("TAG", it.message.toString())
+                    Log.e("SignUpRes", it.message.toString())
                     viewModel.signUpRes.value = ApiState.Loading()
                 }
                 is ApiState.Loading -> {}

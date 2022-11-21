@@ -25,6 +25,7 @@ class AccountViewModel @Inject constructor(
     }
 
     fun signUp() = viewModelScope.launch {
+        Log.d("SignUpRes",userInfo.toString())
         signUpRes.value = ApiState.Loading()
         signUpUseCase.signUp(userInfo)
             .catch {

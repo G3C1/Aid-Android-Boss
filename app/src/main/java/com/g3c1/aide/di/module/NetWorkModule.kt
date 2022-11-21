@@ -1,6 +1,7 @@
 package com.g3c1.aide.di.module
 
 import com.g3c1.aide.di.utils.BaseUrl
+import com.g3c1.aide.remote.api.UserAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,5 +46,11 @@ object NetWorkModule {
     @Singleton
     fun provideConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSeatService(retrofit: Retrofit): UserAPI {
+        return retrofit.create(UserAPI::class.java)
     }
 }
