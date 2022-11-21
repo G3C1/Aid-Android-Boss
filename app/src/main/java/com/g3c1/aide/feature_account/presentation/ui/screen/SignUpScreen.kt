@@ -116,6 +116,8 @@ fun SignUpScreen(
         text = "다음",
         isError = idIsWrong.value || passwordIsWrong.value || passwordIsSame.value || id.value.isEmpty() || password.value.isEmpty() || confirmationPassword.value.isEmpty()
     ) {
+        viewModel.userInfo.id = id.value
+        viewModel.userInfo.password = password.value
         goRealNameScreen()
     }
 }

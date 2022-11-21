@@ -1,5 +1,8 @@
 package com.g3c1.aide.feature_account.presentation.ui.screen
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,14 +17,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
 import com.g3c1.aide.feature_account.presentation.ui.components.InputField
 import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
 import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
+import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
+import kotlinx.coroutines.launch
 
 @Composable
-fun RealNameScreen(viewModel: AccountViewModel, goLoginScreen: () -> Unit) {
+fun RealNameScreen(
+    viewModel: AccountViewModel,
+    lifecycleScope: LifecycleCoroutineScope,
+    context: Context,
+    goLoginScreen: () -> Unit
+) {
     val name = remember {
         mutableStateOf("")
     }
@@ -67,6 +78,46 @@ fun RealNameScreen(viewModel: AccountViewModel, goLoginScreen: () -> Unit) {
         text = "가입",
         isError = name.value.isEmpty()
     ) {
+        viewModel.userInfo.name = name.value
+        viewModel.signUp()
+        signUp(lifecycleScope, viewModel, goLoginScreen, context)
+    }
+}
 
+private fun signUp(
+    lifecycleScope: LifecycleCoroutineScope,
+    viewModel: AccountViewModel,
+    success: () -> Unit,
+    context: Context
+) {
+    lifecycleScope.launch {
+        viewModel.signUpRes.collect {
+            when (it) {
+                is ApiState.Success -> {
+                    success()
+                }
+                is ApiState.Error -> {
+                    Log.d("SignUpRes", it.message.toString())
+                    when (it.status) {
+                        409 -> {
+                            Toast.makeText(
+                                context,
+                                "이미 존재하는 아이디 입니다.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                context,
+                                "알수 없는 오류가 발생했습니다.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    viewModel.signUpRes.value = ApiState.Loading()
+                }
+                is ApiState.Loading -> {}
+            }
+        }
     }
 }

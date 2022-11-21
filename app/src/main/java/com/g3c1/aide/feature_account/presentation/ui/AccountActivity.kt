@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -62,7 +63,11 @@ class AccountActivity : ComponentActivity() {
                         )
                     }
                     composable("RealNameScreen") {
-                        RealNameScreen(viewModel = viewModel(LocalContext.current as AccountActivity)) {
+                        RealNameScreen(
+                            viewModel = viewModel(LocalContext.current as AccountActivity),
+                            lifecycleScope,
+                            applicationContext
+                        ) {
                             navController.navigate("LoginScreen") {
                                 popUpTo("LoginScreen") {
                                     inclusive = true
