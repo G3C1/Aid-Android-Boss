@@ -65,7 +65,8 @@ class AccountActivity : ComponentActivity() {
                     composable("RealNameScreen") {
                         RealNameScreen(
                             viewModel = viewModel(LocalContext.current as AccountActivity),
-                            lifecycleScope
+                            lifecycleScope,
+                            applicationContext
                         ) {
                             navController.navigate("LoginScreen") {
                                 popUpTo("LoginScreen") {
