@@ -3,7 +3,10 @@ package com.g3c1.aide.feature_account.presentation.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -50,15 +53,15 @@ fun InputField(
                 cursorColor = Orange
             ),
             placeholder = {
-                Text(
+                PretendardText(
+                    fontSize = 14.sp,
                     text = hint,
-                    fontFamily = Font.pretendard,
                     fontWeight = FontWeight.Medium,
-                    color = if (isError) Red else Gray2
+                    color = if (isError) Red else Gray2,
                 )
             },
             textStyle = TextStyle(
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 fontFamily = Font.pretendard,
                 fontWeight = FontWeight.Medium,
                 color = if (isError) Red else Gray2
