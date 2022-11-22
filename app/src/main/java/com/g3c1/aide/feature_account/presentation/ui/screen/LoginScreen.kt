@@ -80,7 +80,7 @@ fun LoginPage(viewModel: AccountViewModel, goSignUpScreen: () -> Unit) {
     }
     AccountButton(
         text = "로그인",
-        isError = id.value.isEmpty() && id.value.isEmpty(),
+        isError = id.value.isEmpty() || password.value.isEmpty(),
     ) {
 
     }
