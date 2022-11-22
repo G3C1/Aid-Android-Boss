@@ -94,6 +94,10 @@ private fun signUp(
         viewModel.signUpRes.collect {
             when (it) {
                 is ApiState.Success -> {
+                    Log.d("SignUpRes", it.message.toString())
+                    Toast.makeText(
+                        context, "회원가입에 성공했습니다!", Toast.LENGTH_SHORT
+                    ).show()
                     success()
                 }
                 is ApiState.Error -> {
