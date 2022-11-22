@@ -36,7 +36,11 @@ class AccountActivity : ComponentActivity() {
                 Spacer(modifier = Modifier.fillMaxHeight(0.2f))
                 NavHost(navController = navController, startDestination = "LoginScreen") {
                     composable("LoginScreen") {
-                        LoginPage(viewModel = viewModel(LocalContext.current as AccountActivity)) {
+                        LoginPage(
+                            viewModel = viewModel(LocalContext.current as AccountActivity),
+                            lifecycleScope,
+                            applicationContext
+                        ) {
                             navController.navigate("SignUpScreen") {
                                 popUpTo("SignUpScreen") {
                                     inclusive = true
