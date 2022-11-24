@@ -34,9 +34,13 @@ class AccountActivity : ComponentActivity() {
                 .fillMaxSize()
                 .background(Color.White)) {
                 Spacer(modifier = Modifier.fillMaxHeight(0.2f))
-                NavHost(navController = navController, startDestination = "LoginScreen") {
-                    composable("LoginScreen") {
-                        LoginPage(viewModel = viewModel(LocalContext.current as AccountActivity)) {
+                NavHost(navController = navController, startDestination = "SignInScreen") {
+                    composable("SignInScreen") {
+                        LoginPage(
+                            viewModel = viewModel(LocalContext.current as AccountActivity),
+                            lifecycleScope,
+                            applicationContext
+                        ) {
                             navController.navigate("SignUpScreen") {
                                 popUpTo("SignUpScreen") {
                                     inclusive = true
@@ -47,8 +51,8 @@ class AccountActivity : ComponentActivity() {
                     composable("SignUpScreen") {
                         SignUpScreen(viewModel = viewModel(LocalContext.current as AccountActivity),
                             goLoginScreen = {
-                                navController.navigate("LoginScreen") {
-                                    popUpTo("LoginScreen") {
+                                navController.navigate("SignInScreen") {
+                                    popUpTo("SignInScreen") {
                                         inclusive = true
                                     }
                                 }
@@ -68,8 +72,8 @@ class AccountActivity : ComponentActivity() {
                             lifecycleScope,
                             applicationContext
                         ) {
-                            navController.navigate("LoginScreen") {
-                                popUpTo("LoginScreen") {
+                            navController.navigate("SignInScreen") {
+                                popUpTo("SignInScreen") {
                                     inclusive = true
                                 }
                             }
