@@ -79,16 +79,18 @@ fun RealNameScreen(
         isError = name.value.isEmpty()
     ) {
         viewModel.userInfo.name = name.value
-        viewModel.signUp()
-        signUp(lifecycleScope, viewModel, goLoginScreen, context)
+        viewModel.bossSignUpRequest()
+        bossSignUpRequest(lifecycleScope, viewModel, context) {
+            goLoginScreen()
+        }
     }
 }
 
-private fun signUp(
+private fun bossSignUpRequest(
     lifecycleScope: LifecycleCoroutineScope,
     viewModel: AccountViewModel,
-    success: () -> Unit,
-    context: Context
+    context: Context,
+    success: () -> Unit
 ) {
     lifecycleScope.launch {
         viewModel.signUpRes.collect {

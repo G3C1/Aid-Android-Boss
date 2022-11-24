@@ -27,7 +27,7 @@ class AccountViewModel @Inject constructor(
 
     var userInfo = SignUpUserInfoDTO("", "", "")
 
-    fun signIn(id: String, password: String) = viewModelScope.launch {
+    fun bossSignInRequest(id: String, password: String) = viewModelScope.launch {
         Log.d("SignIn", "id: $id, password: $password")
         signInRes.value = ApiState.Loading()
         signInUseCase.signIn(SignInUserInfoDTO(id = id, password = password))
@@ -38,7 +38,7 @@ class AccountViewModel @Inject constructor(
             }
     }
 
-    fun signUp() = viewModelScope.launch {
+    fun bossSignUpRequest() = viewModelScope.launch {
         Log.d("SignUpRes", userInfo.toString())
         signUpRes.value = ApiState.Loading()
         signUpUseCase.signUp(userInfo)

@@ -93,14 +93,14 @@ fun LoginPage(
         text = "로그인",
         isError = id.value.isEmpty() || password.value.isEmpty(),
     ) {
-        viewModel.signIn(id = id.value, password = password.value)
-        signIn(lifecycleScope, viewModel, context) {
+        viewModel.bossSignInRequest(id = id.value, password = password.value)
+        bossSignInRequest(lifecycleScope, viewModel, context) {
             Log.d("SignIn", "로그인 성공!")
         }
     }
 }
 
-private fun signIn(
+private fun bossSignInRequest(
     lifecycleScope: LifecycleCoroutineScope,
     viewModel: AccountViewModel,
     context: Context,
