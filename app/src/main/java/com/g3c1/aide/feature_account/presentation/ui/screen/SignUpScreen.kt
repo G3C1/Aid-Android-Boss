@@ -74,7 +74,7 @@ fun SignUpScreen(
             isError = idIsWrong.value,
             onValueChange = {
                 id.value = it
-                idIsWrong.value = checkIdPattern(id.value)
+                idIsWrong.value = checkIdPattern(id.value.trim().replace(" ", ""))
             },
             errorMsg = "아이디는 8글자 이상이여야 합니다.",
             isPassword = false
@@ -86,7 +86,7 @@ fun SignUpScreen(
             isError = passwordIsWrong.value,
             onValueChange = {
                 password.value = it
-                passwordIsWrong.value = checkPasswordPattern(password.value)
+                passwordIsWrong.value = checkPasswordPattern(password.value.trim().replace(" ", ""))
             },
             errorMsg = "비밀번호는 영문,숫자,특수문자포함 8~20글자여야 합니다.",
             isPassword = true
@@ -99,7 +99,10 @@ fun SignUpScreen(
             onValueChange = {
                 confirmationPassword.value = it
                 passwordIsSame.value =
-                    checkPasswordIsSame(password.value, confirmationPassword.value)
+                    checkPasswordIsSame(
+                        password.value.trim().replace(" ", ""),
+                        confirmationPassword.value.trim().replace(" ", "")
+                    )
             },
             errorMsg = "비밀번호가 일치하지 않습니다.",
             isPassword = true
@@ -116,8 +119,8 @@ fun SignUpScreen(
         text = "다음",
         isError = idIsWrong.value || passwordIsWrong.value || passwordIsSame.value || id.value.isEmpty() || password.value.isEmpty() || confirmationPassword.value.isEmpty()
     ) {
-        viewModel.userInfo.id = id.value
-        viewModel.userInfo.password = password.value
+        viewModel.userInfo.id = id.value.trim().replace(" ", "")
+        viewModel.userInfo.password = password.value.trim().replace(" ", "")
         goRealNameScreen()
     }
 }
