@@ -78,7 +78,7 @@ fun RealNameScreen(
         text = "가입",
         isError = name.value.isEmpty()
     ) {
-        viewModel.userInfo.name = name.value
+        viewModel.userInfo.name = name.value.trim().replace(" ", "")
         viewModel.bossSignUpRequest()
         bossSignUpRequest(lifecycleScope, viewModel, context) {
             goLoginScreen()

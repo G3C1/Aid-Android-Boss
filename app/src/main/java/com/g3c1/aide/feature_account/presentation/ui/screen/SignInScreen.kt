@@ -93,7 +93,10 @@ fun LoginPage(
         text = "로그인",
         isError = id.value.isEmpty() || password.value.isEmpty(),
     ) {
-        viewModel.bossSignInRequest(id = id.value, password = password.value)
+        viewModel.bossSignInRequest(
+            id = id.value,
+            password = password.value
+        )
         bossSignInRequest(lifecycleScope, viewModel, context) {
             Log.d("SignIn", "로그인 성공!")
         }
@@ -120,6 +123,13 @@ private fun bossSignInRequest(
                             Toast.makeText(
                                 context,
                                 "비밀번호가 일치하지 않습니다.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        404 -> {
+                            Toast.makeText(
+                                context,
+                                "아이디를 찾을 수 없습니다.",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
