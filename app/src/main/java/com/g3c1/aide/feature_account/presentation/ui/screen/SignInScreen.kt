@@ -18,14 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
 import com.g3c1.aide.feature_account.presentation.ui.components.InputField
 import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
 import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Composable
@@ -115,19 +113,6 @@ private fun bossSignInRequest(
         viewModel.signInRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("SignIn", it.data.toString())
-                    Log.d(
-                        "SignIn",
-                        AideBossApplication.getInstance().getTokenManager().accessToken.first()
-                    )
-                    Log.d(
-                        "SignIn",
-                        AideBossApplication.getInstance().getTokenManager().refreshToken.first()
-                    )
-                    Log.d(
-                        "SignIn",
-                        AideBossApplication.getInstance().getTokenManager().expiredAt.first()
-                    )
                     success()
                 }
                 is ApiState.Error -> {
