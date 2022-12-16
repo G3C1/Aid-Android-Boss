@@ -9,5 +9,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun signUp(body: SignUpUserInfoDTO): Flow<ApiState<Unit>>
 
-    suspend fun signIn(body: SignInUserInfoDTO): Flow<ApiState<SignInResponseDTO>>
+    suspend fun login(body: SignInUserInfoDTO): Flow<ApiState<SignInResponseDTO>>
 }

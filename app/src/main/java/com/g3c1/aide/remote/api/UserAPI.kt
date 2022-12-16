@@ -14,7 +14,7 @@ interface UserAPI {
     ): Response<Unit>
 
     @POST("v2/user/login")
-    suspend fun signIn(
+    suspend fun login(
         @Body body: SignInUserInfoDTO
     ): Response<SignInResponseDTO>
 }

@@ -7,7 +7,7 @@ import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.data.dto.req.SignInUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.req.SignUpUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
-import com.g3c1.aide.feature_account.domain.usecase.SignInUseCase
+import com.g3c1.aide.feature_account.domain.usecase.LoginUseCase
 import com.g3c1.aide.feature_account.domain.usecase.SignUpUseCase
 import com.g3c1.aide.remote.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
-    private val signInUseCase: SignInUseCase
-) : ViewModel() {
+    private val signInUseCase: LoginUseCase
+): ViewModel() {
     val signUpRes: MutableStateFlow<ApiState<Unit>> = MutableStateFlow(ApiState.Loading())
     val signInRes: MutableStateFlow<ApiState<SignInResponseDTO>> =
         MutableStateFlow(ApiState.Loading())
@@ -29,7 +29,7 @@ class AccountViewModel @Inject constructor(
 
     fun bossSignInRequest(id: String, password: String) = viewModelScope.launch {
         signInRes.value = ApiState.Loading()
-        signInUseCase.signIn(
+        signInUseCase.login(
             SignInUserInfoDTO(
                 id = id.trim().replace(" ", ""),
                 password = password.trim().replace(" ", "")

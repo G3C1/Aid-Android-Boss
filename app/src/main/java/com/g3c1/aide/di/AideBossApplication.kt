@@ -5,7 +5,7 @@ import com.g3c1.aide.feature_account.presentation.utils.TokenManager
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class AideBossApplication : Application() {
+class AideBossApplication: Application() {
     private lateinit var tokenManager: TokenManager
 
     companion object {

@@ -21,4 +21,6 @@ object Versions {
     const val OKHTTP = "3.14.9"
 
     const val SYSTEM_UI_CONTROLLER = "0.23.1"
+
+    const val DATASTORE = "1.0.0"
 }
