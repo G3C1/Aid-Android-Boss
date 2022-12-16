@@ -5,8 +5,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.Flow
+import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
@@ -17,49 +18,36 @@ class TokenManager(private val context: Context) {
     private val refresh = stringPreferencesKey("refresh")
     private val expired = stringPreferencesKey("expired")
 
-    val accessToken: Flow<String> = context.dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
+    suspend fun getTokenData(type: TokenType): String {
+        val tokenData = context.dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
             }
-        }
-        .map { preferences ->
-            preferences[access] ?: ""
-        }
-
-    val refreshToken: Flow<String> = context.dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
+            .map { preferences ->
+                preferences[
+                        when (type) {
+                            ACCESS -> access
+                            REFRESH -> refresh
+                            EXPIRED -> expired
+                        }
+                ] ?: ""
             }
-        }
-        .map { preferences ->
-            preferences[refresh] ?: ""
-        }
+        return tokenData.first()
+    }
 
-    val expiredAt: Flow<String> = context.dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }
-        .map { preferences ->
-            preferences[expired] ?: ""
-        }
-
-    suspend fun setTokenData(data: String, type: String) {
+    suspend fun setTokenData(data: String, type: TokenType) {
         context.dataStore.edit { preferences ->
-            when (type) {
-                "access" -> preferences[access] = data
-                "refresh" -> preferences[refresh] = data
-                "expired" -> preferences[expired] = data
-            }
+            preferences[
+                    when (type) {
+                        ACCESS -> access
+                        REFRESH -> refresh
+                        EXPIRED -> expired
+                    }
+            ] = data
         }
     }
 }

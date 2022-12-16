@@ -9,6 +9,7 @@ import com.g3c1.aide.feature_account.data.dto.req.SignUpUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
 import com.g3c1.aide.feature_account.domain.usecase.LoginUseCase
 import com.g3c1.aide.feature_account.domain.usecase.SignUpUseCase
+import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
 import com.g3c1.aide.remote.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,11 +39,11 @@ class AccountViewModel @Inject constructor(
             Log.d("SignIn", "body: ${it.message}")
         }.collect { value ->
             AideBossApplication.getInstance().getTokenManager()
-                .setTokenData(value.data!!.accessToken, "access")
+                .setTokenData(value.data!!.accessToken, ACCESS)
             AideBossApplication.getInstance().getTokenManager()
-                .setTokenData(value.data.refreshToken, "refresh")
+                .setTokenData(value.data.refreshToken, REFRESH)
             AideBossApplication.getInstance().getTokenManager()
-                .setTokenData(value.data.expiredAt, "expired")
+                .setTokenData(value.data.expiredAt, EXPIRED)
             signInRes.value = value
         }
     }
