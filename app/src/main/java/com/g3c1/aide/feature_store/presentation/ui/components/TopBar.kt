@@ -33,6 +33,6 @@ fun TopBar(bossName: String) {
             color = Color.Black
         )
         Spacer(modifier = Modifier.fillMaxWidth(0.85f))
-        Image(painter = painterResource(id = R.drawable.boss_ic), contentDescription = "bossIcon")
+        Image(painter = painterResource(id = R.drawable.boss_ic), contentDescription = "BossIcon")
     }
 }
