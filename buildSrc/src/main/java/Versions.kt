@@ -23,4 +23,6 @@ object Versions {
     const val SYSTEM_UI_CONTROLLER = "0.23.1"
 
     const val DATASTORE = "1.0.0"
+
+    const val COIL = "1.3.2"
 }

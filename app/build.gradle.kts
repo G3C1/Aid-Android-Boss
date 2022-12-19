@@ -77,6 +77,7 @@ dependencies {
     implementation(Dependency.Libraries.OKHTTP)
     implementation(Dependency.Libraries.DATASTORE)
     implementation(Dependency.Libraries.DATASTORE_CORE)
+    implementation(Dependency.Libraries.COIL)
 
     implementation(Dependency.Google.SYSTEM_UI_CONTROLLER)
 }
