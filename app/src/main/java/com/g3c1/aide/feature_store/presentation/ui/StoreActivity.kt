@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import com.g3c1.aide.feature_store.data.dto.StoreInfoDTO
 import com.g3c1.aide.feature_store.presentation.ui.screen.SelectStoreScreen
 
-class StoreActivity : ComponentActivity() {
+class StoreActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

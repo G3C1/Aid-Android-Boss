@@ -39,7 +39,7 @@ fun StoreListScreen(item: List<StoreInfoDTO>) {
             Spacer(modifier = Modifier.size(24.dp))
             Box(modifier = Modifier.clickable { }) {
                 PretendardText(
-                    text = "+가게추가하기",
+                    text = "+가게 추가하기",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Orange
