@@ -46,5 +46,8 @@ object Dependency {
         const val RETROFIT_CONVERTER_GSON =
             "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
         const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
+        const val DATASTORE = "androidx.datastore:datastore-preferences:${Versions.DATASTORE}"
+        const val DATASTORE_CORE =
+            "androidx.datastore:datastore-preferences-core:${Versions.DATASTORE}"
     }
 }

@@ -113,7 +113,6 @@ private fun bossSignInRequest(
         viewModel.signInRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("SignIn", it.data.toString())
                     success()
                 }
                 is ApiState.Error -> {

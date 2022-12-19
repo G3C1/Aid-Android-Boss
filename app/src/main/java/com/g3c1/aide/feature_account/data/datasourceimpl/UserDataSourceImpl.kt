@@ -42,10 +42,10 @@ class UserDataSourceImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun signIn(body: SignInUserInfoDTO): Flow<ApiState<SignInResponseDTO>> {
+    override suspend fun login(body: SignInUserInfoDTO): Flow<ApiState<SignInResponseDTO>> {
         return flow {
             try {
-                val response = api.signIn(body = body)
+                val response = api.login(body = body)
                 if (response.isSuccessful) {
                     response.body()?.let {
                         emit(ApiState.Success(it, status = response.code()))

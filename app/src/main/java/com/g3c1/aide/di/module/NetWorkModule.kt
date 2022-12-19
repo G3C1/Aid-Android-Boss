@@ -2,6 +2,7 @@ package com.g3c1.aide.di.module
 
 import com.g3c1.aide.di.utils.FakeUrl
 import com.g3c1.aide.remote.api.UserAPI
+import com.g3c1.aide.remote.utils.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +26,7 @@ object NetWorkModule {
             .readTimeout(30, TimeUnit.SECONDS)
             // 읽기 타임 아웃의 반대 방향. 얼마나 빨리 서버에 바이트를 보낼 수 있는지 확인
             .writeTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(TokenInterceptor())
             .build()
     }
 

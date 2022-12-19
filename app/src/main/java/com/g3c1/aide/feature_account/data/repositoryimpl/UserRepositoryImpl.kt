@@ -16,7 +16,7 @@ class UserRepositoryImpl @Inject constructor(
         return dataSource.signUp(body = body)
     }
 
-    override suspend fun signIn(body: SignInUserInfoDTO): Flow<ApiState<SignInResponseDTO>> {
-        return dataSource.signIn(body = body)
+    override suspend fun login(body: SignInUserInfoDTO): Flow<ApiState<SignInResponseDTO>> {
+        return dataSource.login(body = body)
     }
 }
