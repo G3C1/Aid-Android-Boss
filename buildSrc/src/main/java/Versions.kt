@@ -15,7 +15,7 @@ object Versions {
     const val COMPOSE = "1.2.0-alpha03"
     const val COMPOSE_NAV = "2.5.1"
 
-    const val HILT = "2.38.1"
+    const val HILT = "2.44"
 
     const val RETROFIT = "2.7.1"
     const val OKHTTP = "3.14.9"
