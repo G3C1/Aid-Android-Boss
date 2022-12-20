@@ -44,7 +44,7 @@ fun InputField(
             modifier = Modifier.fillMaxWidth(0.9f),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Gray,
-                textColor = Gray2,
+                textColor = DeepDarkGray,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
@@ -57,14 +57,14 @@ fun InputField(
                     fontSize = 14.sp,
                     text = hint,
                     fontWeight = FontWeight.Medium,
-                    color = if (isError) Red else Gray2,
+                    color = if (isError) Red else DeepDarkGray,
                 )
             },
             textStyle = TextStyle(
                 fontSize = 14.sp,
                 fontFamily = Font.pretendard,
                 fontWeight = FontWeight.Medium,
-                color = if (isError) Red else Gray2
+                color = if (isError) Red else DeepDarkGray
             ),
             visualTransformation = if (passwordVisible.value) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text),
@@ -76,7 +76,7 @@ fun InputField(
 
                 if (isPassword) {
                     IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                        Icon(imageVector = image, description, tint = Gray2)
+                        Icon(imageVector = image, description, tint = DeepDarkGray)
                     }
                 }
             },

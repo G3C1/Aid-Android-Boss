@@ -49,5 +49,6 @@ object Dependency {
         const val DATASTORE = "androidx.datastore:datastore-preferences:${Versions.DATASTORE}"
         const val DATASTORE_CORE =
             "androidx.datastore:datastore-preferences-core:${Versions.DATASTORE}"
+        const val COIL = "io.coil-kt:coil-compose:${Versions.COIL}"
     }
 }

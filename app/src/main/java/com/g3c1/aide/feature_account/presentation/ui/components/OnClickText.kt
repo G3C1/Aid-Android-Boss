@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import com.g3c1.aide.ui.theme.Font
-import com.g3c1.aide.ui.theme.Gray2
+import com.g3c1.aide.ui.theme.DeepDarkGray
 import com.g3c1.aide.ui.theme.Orange
 
 @Composable
@@ -19,7 +19,7 @@ fun OnClickText(firstText: String, orangeText: String, lastText: String, onClick
         buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color = Gray2,
+                    color = DeepDarkGray,
                     fontFamily = Font.pretendard,
                     fontWeight = FontWeight.Normal,
                     fontSize = 13.sp
@@ -38,7 +38,7 @@ fun OnClickText(firstText: String, orangeText: String, lastText: String, onClick
             }
             withStyle(
                 style = SpanStyle(
-                    color = Gray2, fontFamily = Font.pretendard,
+                    color = DeepDarkGray, fontFamily = Font.pretendard,
                     fontWeight = FontWeight.Normal,
                     fontSize = 13.sp
                 )
