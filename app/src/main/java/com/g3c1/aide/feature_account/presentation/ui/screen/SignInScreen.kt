@@ -31,7 +31,8 @@ fun LoginPage(
     viewModel: AccountViewModel,
     lifecycleScope: LifecycleCoroutineScope,
     context: Context,
-    goSignUpScreen: () -> Unit
+    goSignUpScreen: () -> Unit,
+    loginSuccess: () -> Unit
 ) {
     val id = remember {
         mutableStateOf("")
@@ -98,7 +99,7 @@ fun LoginPage(
             password = password.value
         )
         bossSignInRequest(lifecycleScope, viewModel, context) {
-            Log.d("SignIn", "로그인 성공!")
+            loginSuccess()
         }
     }
 }
