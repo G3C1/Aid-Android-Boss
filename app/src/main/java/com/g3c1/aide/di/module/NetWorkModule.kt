@@ -1,6 +1,7 @@
 package com.g3c1.aide.di.module
 
 import com.g3c1.aide.di.utils.FakeUrl
+import com.g3c1.aide.remote.api.StoreAPI
 import com.g3c1.aide.remote.api.UserAPI
 import com.g3c1.aide.remote.utils.TokenInterceptor
 import dagger.Module
@@ -54,5 +55,11 @@ object NetWorkModule {
     @Singleton
     fun provideSeatService(retrofit: Retrofit): UserAPI {
         return retrofit.create(UserAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreService(retrofit: Retrofit): StoreAPI {
+        return retrofit.create(StoreAPI::class.java)
     }
 }
