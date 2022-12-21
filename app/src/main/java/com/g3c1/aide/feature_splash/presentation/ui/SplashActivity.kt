@@ -9,9 +9,11 @@ import com.g3c1.aide.feature_account.presentation.ui.AccountActivity
 import com.g3c1.aide.feature_splash.presentation.ui.screen.SplashScreen
 import com.g3c1.aide.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

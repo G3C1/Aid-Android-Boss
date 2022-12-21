@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -17,7 +18,7 @@ class TokenManager(private val context: Context) {
     private val refresh = stringPreferencesKey("refresh")
     private val expired = stringPreferencesKey("expired")
 
-    suspend fun getTokenData(type: Types.TokenType): String {
+    suspend fun getTokenData(type: TokenType): String {
         val tokenData = context.dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -29,22 +30,22 @@ class TokenManager(private val context: Context) {
             .map { preferences ->
                 preferences[
                         when (type) {
-                            Types.TokenType.ACCESS -> access
-                            Types.TokenType.REFRESH -> refresh
-                            Types.TokenType.EXPIRED -> expired
+                            ACCESS -> access
+                            REFRESH -> refresh
+                            EXPIRED -> expired
                         }
                 ] ?: ""
             }
         return tokenData.first()
     }
 
-    suspend fun setTokenData(data: String, type: Types.TokenType) {
+    suspend fun setTokenData(data: String, type: TokenType) {
         context.dataStore.edit { preferences ->
             preferences[
                     when (type) {
-                        Types.TokenType.ACCESS -> access
-                        Types.TokenType.REFRESH -> refresh
-                        Types.TokenType.EXPIRED -> expired
+                        ACCESS -> access
+                        REFRESH -> refresh
+                        EXPIRED -> expired
                     }
             ] = data
         }

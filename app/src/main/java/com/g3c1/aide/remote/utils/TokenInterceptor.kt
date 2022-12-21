@@ -1,7 +1,7 @@
 package com.g3c1.aide.remote.utils
 
 import com.g3c1.aide.di.AideBossApplication
-import com.g3c1.aide.feature_account.presentation.utils.Types
+import com.g3c1.aide.feature_account.presentation.utils.TokenType.ACCESS
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -21,7 +21,7 @@ class TokenInterceptor : Interceptor {
                 request.newBuilder().addHeader(
                     "Authorization",
                     AideBossApplication.getInstance().getTokenManager()
-                        .getTokenData(Types.TokenType.ACCESS)
+                        .getTokenData(ACCESS)
                 ).build()
         }
         return proceed(if (ignorePath.contains(path)) request else accessTokenRequest)
