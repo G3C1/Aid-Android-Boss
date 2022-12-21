@@ -1,5 +1,6 @@
 package com.g3c1.aide.feature_account.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.g3c1.aide.feature_account.presentation.ui.screen.LoginPage
 import com.g3c1.aide.feature_account.presentation.ui.screen.RealNameScreen
 import com.g3c1.aide.feature_account.presentation.ui.screen.SignUpScreen
+import com.g3c1.aide.feature_store.presentation.ui.StoreActivity
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,14 +41,24 @@ class AccountActivity: ComponentActivity() {
                         LoginPage(
                             viewModel = viewModel(LocalContext.current as AccountActivity),
                             lifecycleScope,
-                            applicationContext
-                        ) {
-                            navController.navigate("SignUpScreen") {
-                                popUpTo("SignUpScreen") {
-                                    inclusive = true
+                            applicationContext,
+                            goSignUpScreen = {
+                                navController.navigate("SignUpScreen") {
+                                    popUpTo("SignUpScreen") {
+                                        inclusive = true
+                                    }
                                 }
+                            },
+                            loginSuccess = {
+                                startActivity(
+                                    Intent(
+                                        this@AccountActivity,
+                                        StoreActivity::class.java
+                                    )
+                                )
+                                finish()
                             }
-                        }
+                        )
                     }
                     composable("SignUpScreen") {
                         SignUpScreen(viewModel = viewModel(LocalContext.current as AccountActivity),

@@ -18,9 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleCoroutineScope
+import com.g3c1.aide.di.AideBossApplication
+import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
 import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
 import com.g3c1.aide.feature_account.presentation.ui.components.InputField
 import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
+import com.g3c1.aide.feature_account.presentation.utils.TokenType
 import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
@@ -31,7 +34,8 @@ fun LoginPage(
     viewModel: AccountViewModel,
     lifecycleScope: LifecycleCoroutineScope,
     context: Context,
-    goSignUpScreen: () -> Unit
+    goSignUpScreen: () -> Unit,
+    loginSuccess: () -> Unit
 ) {
     val id = remember {
         mutableStateOf("")
@@ -98,7 +102,7 @@ fun LoginPage(
             password = password.value
         )
         bossSignInRequest(lifecycleScope, viewModel, context) {
-            Log.d("SignIn", "로그인 성공!")
+            loginSuccess()
         }
     }
 }
@@ -114,6 +118,7 @@ private fun bossSignInRequest(
             when (it) {
                 is ApiState.Success -> {
                     success()
+                    saveTokenInfo(it.data!!, lifecycleScope)
                 }
                 is ApiState.Error -> {
                     Log.d("SignIn", it.message.toString())
@@ -145,5 +150,16 @@ private fun bossSignInRequest(
                 is ApiState.Loading -> {}
             }
         }
+    }
+}
+
+private fun saveTokenInfo(data: SignInResponseDTO, lifecycleScope: LifecycleCoroutineScope) {
+    lifecycleScope.launch {
+        AideBossApplication.getInstance().getTokenManager()
+            .setTokenData("Bearer " + data.accessToken, TokenType.ACCESS)
+        AideBossApplication.getInstance().getTokenManager()
+            .setTokenData(data.refreshToken, TokenType.REFRESH)
+        AideBossApplication.getInstance().getTokenManager()
+            .setTokenData(data.expiredAt, TokenType.EXPIRED)
     }
 }

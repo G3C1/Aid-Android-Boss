@@ -9,15 +9,21 @@ import okhttp3.Response
 
 class TokenInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = with(chain) {
-        lateinit var accessToken: Request
+        lateinit var accessTokenRequest: Request
+        val request = chain.request()
+        val path = request.url().encodedPath()
+        val ignorePath = listOf(
+            "v2/user/",
+            "v2/user/login"
+        )
         runBlocking {
-            accessToken =
-                request().newBuilder().addHeader(
+            accessTokenRequest =
+                request.newBuilder().addHeader(
                     "Authorization",
                     AideBossApplication.getInstance().getTokenManager()
                         .getTokenData(TokenType.ACCESS)
                 ).build()
         }
-        return proceed(accessToken)
+        return proceed(if (ignorePath.contains(path)) request else accessTokenRequest)
     }
 }
