@@ -10,14 +10,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class TokenManager(private val context: Context) {
-    private val Context.dataStore by preferencesDataStore(name = "tokenDataStore")
+class AutoLoginManager(private val context: Context) {
+    private val Context.dataStore by preferencesDataStore(name = "AccountDataStore")
 
-    private val access = stringPreferencesKey("access")
-    private val refresh = stringPreferencesKey("refresh")
-    private val expired = stringPreferencesKey("expired")
+    private val id = stringPreferencesKey("id")
+    private val password = stringPreferencesKey("password")
 
-    suspend fun getTokenData(type: Types.TokenType): String {
+    suspend fun getAccountData(type: Types.AccoutDataType): String {
         val tokenData = context.dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -29,22 +28,20 @@ class TokenManager(private val context: Context) {
             .map { preferences ->
                 preferences[
                         when (type) {
-                            Types.TokenType.ACCESS -> access
-                            Types.TokenType.REFRESH -> refresh
-                            Types.TokenType.EXPIRED -> expired
+                            Types.AccoutDataType.ID -> id
+                            Types.AccoutDataType.PASSWORD -> password
                         }
                 ] ?: ""
             }
         return tokenData.first()
     }
 
-    suspend fun setTokenData(data: String, type: Types.TokenType) {
+    suspend fun setTokenData(data: String, type: Types.AccoutDataType) {
         context.dataStore.edit { preferences ->
             preferences[
                     when (type) {
-                        Types.TokenType.ACCESS -> access
-                        Types.TokenType.REFRESH -> refresh
-                        Types.TokenType.EXPIRED -> expired
+                        Types.AccoutDataType.ID -> id
+                        Types.AccoutDataType.PASSWORD -> password
                     }
             ] = data
         }

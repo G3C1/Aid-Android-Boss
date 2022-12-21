@@ -23,7 +23,7 @@ import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
 import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
 import com.g3c1.aide.feature_account.presentation.ui.components.InputField
 import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
-import com.g3c1.aide.feature_account.presentation.utils.TokenType
+import com.g3c1.aide.feature_account.presentation.utils.Types
 import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
@@ -103,6 +103,7 @@ fun LoginPage(
         )
         bossSignInRequest(lifecycleScope, viewModel, context) {
             loginSuccess()
+            saveAccountInfo(id.value, password.value, lifecycleScope)
         }
     }
 }
@@ -156,10 +157,16 @@ private fun bossSignInRequest(
 private fun saveTokenInfo(data: SignInResponseDTO, lifecycleScope: LifecycleCoroutineScope) {
     lifecycleScope.launch {
         AideBossApplication.getInstance().getTokenManager()
-            .setTokenData("Bearer " + data.accessToken, TokenType.ACCESS)
+            .setTokenData("Bearer " + data.accessToken, Types.TokenType.ACCESS)
         AideBossApplication.getInstance().getTokenManager()
-            .setTokenData(data.refreshToken, TokenType.REFRESH)
+            .setTokenData(data.refreshToken, Types.TokenType.REFRESH)
         AideBossApplication.getInstance().getTokenManager()
-            .setTokenData(data.expiredAt, TokenType.EXPIRED)
+            .setTokenData(data.expiredAt, Types.TokenType.EXPIRED)
+    }
+}
+
+private fun saveAccountInfo(id: String, password: String, lifecycleScope: LifecycleCoroutineScope) {
+    lifecycleScope.launch {
+
     }
 }
