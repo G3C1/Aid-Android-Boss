@@ -1,6 +1,6 @@
 package com.g3c1.aide.di.module
 
-import com.g3c1.aide.di.utils.BaseUrl
+import com.g3c1.aide.di.utils.FakeUrl
 import com.g3c1.aide.remote.api.StoreAPI
 import com.g3c1.aide.remote.api.UserAPI
 import com.g3c1.aide.remote.utils.TokenInterceptor
@@ -36,7 +36,7 @@ object NetWorkModule {
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BaseUrl.BASE_URL)
+            .baseUrl(FakeUrl.BASE_URL)
             .client(okHttpClient)
             .client(provideOkhttpClient())
             .addConverterFactory(gsonConverterFactory)
