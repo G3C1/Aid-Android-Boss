@@ -39,7 +39,7 @@ class AccountViewModel @Inject constructor(
             Log.d("SignIn", "body: ${it.message}")
         }.collect { value ->
             AideBossApplication.getInstance().getTokenManager()
-                .setTokenData(value.data!!.accessToken, ACCESS)
+                .setTokenData("Bearer " + value.data!!.accessToken, ACCESS)
             AideBossApplication.getInstance().getTokenManager()
                 .setTokenData(value.data.refreshToken, REFRESH)
             AideBossApplication.getInstance().getTokenManager()

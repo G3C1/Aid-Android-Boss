@@ -28,9 +28,10 @@ class StoreActivity: ComponentActivity() {
             storeViewModel.getMyStoresRes.collect {
                 when (it) {
                     is ApiState.Success -> {
+                        Log.d("StoreActivity", it.data.toString())
                         setContent {
                             SelectStoreScreen(
-                                bossName = it.data!!.name, storeInfoList = it.data.storeList
+                                bossName = it.data!!.userName, storeInfoList = it.data.storeList
                             )
                         }
                     }
