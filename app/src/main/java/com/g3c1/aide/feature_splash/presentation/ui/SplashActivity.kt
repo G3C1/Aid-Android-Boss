@@ -5,8 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
+import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.ui.AccountActivity
+import com.g3c1.aide.feature_account.presentation.utils.TokenType
 import com.g3c1.aide.feature_splash.presentation.ui.screen.SplashScreen
+import com.g3c1.aide.feature_store.presentation.ui.StoreActivity
 import com.g3c1.aide.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +26,16 @@ class SplashActivity : ComponentActivity() {
             SplashScreen()
         }
         lifecycleScope.launch {
+            val isNotLogin =
+                AideBossApplication.getInstance().getTokenManager().getTokenData(TokenType.ACCESS)
+                    .isEmpty()
             delay(1000)
-            startActivity(Intent(this@SplashActivity, AccountActivity::class.java))
+            startActivity(
+                Intent(
+                    this@SplashActivity,
+                    if (false) AccountActivity::class.java else StoreActivity::class.java
+                )
+            )
         }
     }
 }
