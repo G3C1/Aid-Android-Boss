@@ -7,6 +7,7 @@ import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import java.time.LocalDateTime
@@ -25,26 +26,18 @@ class TokenInterceptor : Interceptor {
             "/api/v2/user/",
             "/api/v2/user/login"
         )
-        runBlocking {
+        runBlocking(Dispatchers.IO) {
             expiredAt = AideBossApplication.getInstance().getTokenManager().getTokenData(EXPIRED)
                 .replace("\"", "")
             refresh = AideBossApplication.getInstance().getTokenManager().getTokenData(REFRESH)
                 .replace("\"", "")
-
-            accessTokenRequest =
-                request.newBuilder().addHeader(
-                    "Authorization",
-                    AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
-                        .replace("\"", "")
-                ).build()
         }
-
         val expiredAtDateTime = LocalDateTime.parse(
             expiredAt,
             DateTimeFormatter.ISO_LOCAL_DATE_TIME
         )
         val currentTime = LocalDateTime.now(ZoneId.systemDefault())
-        Log.d("Interceptor", "ex: $expiredAtDateTime, cur: $currentTime")
+
         if (currentTime.isAfter(expiredAtDateTime)) {
             try {
                 val client = OkHttpClient()
@@ -56,27 +49,34 @@ class TokenInterceptor : Interceptor {
                 val jsonParser = JsonParser()
                 val response = client.newCall(request).execute()
                 if (response.isSuccessful) {
-                    Log.d("Interceptor", "성공")
                     val token = jsonParser.parse(response.body()!!.string()) as JsonObject
                     runBlocking {
                         AideBossApplication.getInstance().getTokenManager()
-                            .setTokenData(token["accessToken"].toString(), ACCESS)
+                            .setTokenData("Bearer " + token["accessToken"].toString(), ACCESS)
                         AideBossApplication.getInstance().getTokenManager()
                             .setTokenData(token["refreshToken"].toString(), REFRESH)
                         AideBossApplication.getInstance().getTokenManager()
                             .setTokenData(token["expiredAt"].toString(), EXPIRED)
-                        accessTokenRequest =
-                            request.newBuilder().addHeader(
-                                "Authorization",
-                                AideBossApplication.getInstance().getTokenManager()
-                                    .getTokenData(ACCESS)
-                            ).build()
                     }
                     Log.d("Interceptor", token.toString())
                 }
             } catch (e: Exception) {
                 Log.d("Interceptor", e.toString())
             }
+        }
+
+        runBlocking(Dispatchers.IO) {
+            accessTokenRequest =
+                request.newBuilder().addHeader(
+                    "Authorization",
+                    AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
+                        .replace("\"", "")
+                ).build()
+            Log.d(
+                "Interceptor",
+                AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
+                    .replace("\"", "")
+            )
         }
 
         return proceed(if (ignorePath.contains(path)) request else accessTokenRequest)
