@@ -25,16 +25,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Access REFRESH_API_URL
+      - name: Create local.properties
         run: |
-          echo REFRESH_API_URL=\"$REFRESH_API_URL\" > local.properties
+          touch ./local.properties
+          echo "${{ secrets.BASE_URL }}" >> ./local.properties
         shell: bash
-        env:
-          API_KEY: ${{ secrets.REFRESH_API_URL }}
 
-      - name: Access BASE_URL
-          run: |
-            echo BASE_URL=\"$BASE_URL\" > local.properties
-          shell: bash
-          env:
-            API_KEY: ${{ secrets.BASE_URL }}
+      - name: Create local.properties
+        run: |
+          touch ./local.properties
+          echo "${{ secrets.REFRESH_API_URL }}" >> ./local.properties
+        shell: bash
