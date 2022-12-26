@@ -28,14 +28,14 @@ jobs:
 
       - name: Access BASE_URL
         run: |
-          echo BASE_URL=\"$BASE_URL\" > ./local.properties
+          echo BASE_URL="" > ./local.properties
         shell: bash
         env:
           API_KEY: ${{ secrets.BASE_URL }}
 
       - name: Access REFRESH_API_URL
         run: |
-          echo REFRESH_API_URL=\"$REFRESH_API_URL\" > ./local.properties
+          echo REFRESH_API_URL="" > ./local.properties
         shell: bash
         env:
           API_KEY: ${{ secrets.REFRESH_API_URL }}
