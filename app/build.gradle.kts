@@ -1,9 +1,14 @@
+import java.util.*
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
     kotlin("kapt")
 }
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.g3c1.aide"
@@ -20,6 +25,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField(
+            "String",
+            "REFRESH_API_URL",
+            properties.getProperty("REFRESH_API_URL")
+        )
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            properties.getProperty("BASE_URL")
+        )
     }
 
     buildTypes {

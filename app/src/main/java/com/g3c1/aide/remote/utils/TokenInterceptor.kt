@@ -3,6 +3,7 @@ package com.g3c1.aide.remote.utils
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.g3c1.aide.BuildConfig
 import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
 import com.google.gson.JsonObject
@@ -64,7 +65,7 @@ class TokenInterceptor : Interceptor {
         try {
             val client = OkHttpClient()
             val request = Request.Builder()
-                .url("http://10.82.18.78:8000/api/v2/user")
+                .url(BuildConfig.REFRESH_API_URL)
                 .patch(RequestBody.create(MediaType.parse("application/json"), ""))
                 .addHeader("Refresh-Token", refresh)
                 .build()
