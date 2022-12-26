@@ -39,30 +39,7 @@ class TokenInterceptor : Interceptor {
         val currentTime = LocalDateTime.now(ZoneId.systemDefault())
 
         if (currentTime.isAfter(expiredAtDateTime)) {
-            try {
-                val client = OkHttpClient()
-                val request = Request.Builder()
-                    .url("http://10.82.18.78:8000/api/v2/user")
-                    .patch(RequestBody.create(MediaType.parse("application/json"), ""))
-                    .addHeader("Refresh-Token", refresh)
-                    .build()
-                val jsonParser = JsonParser()
-                val response = client.newCall(request).execute()
-                if (response.isSuccessful) {
-                    val token = jsonParser.parse(response.body()!!.string()) as JsonObject
-                    runBlocking {
-                        AideBossApplication.getInstance().getTokenManager()
-                            .setTokenData("Bearer " + token["accessToken"].toString(), ACCESS)
-                        AideBossApplication.getInstance().getTokenManager()
-                            .setTokenData(token["refreshToken"].toString(), REFRESH)
-                        AideBossApplication.getInstance().getTokenManager()
-                            .setTokenData(token["expiredAt"].toString(), EXPIRED)
-                    }
-                    Log.d("Interceptor", token.toString())
-                }
-            } catch (e: Exception) {
-                Log.d("Interceptor", e.toString())
-            }
+            sendRefreshRequest(refresh)
         }
 
         runBlocking(Dispatchers.IO) {
@@ -80,5 +57,37 @@ class TokenInterceptor : Interceptor {
         }
 
         return proceed(if (ignorePath.contains(path)) request else accessTokenRequest)
+    }
+
+    fun sendRefreshRequest(refresh: String): Boolean {
+        var isRefreshExpired = false
+        try {
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("http://10.82.18.78:8000/api/v2/user")
+                .patch(RequestBody.create(MediaType.parse("application/json"), ""))
+                .addHeader("Refresh-Token", refresh)
+                .build()
+            val jsonParser = JsonParser()
+            val response = client.newCall(request).execute()
+            if (response.isSuccessful) {
+                val token = jsonParser.parse(response.body()!!.string()) as JsonObject
+                runBlocking {
+                    AideBossApplication.getInstance().getTokenManager()
+                        .setTokenData("Bearer " + token["accessToken"].toString(), ACCESS)
+                    AideBossApplication.getInstance().getTokenManager()
+                        .setTokenData(token["refreshToken"].toString(), REFRESH)
+                    AideBossApplication.getInstance().getTokenManager()
+                        .setTokenData(token["expiredAt"].toString(), EXPIRED)
+                }
+                Log.d("Interceptor", token.toString())
+            } else {
+                isRefreshExpired = true
+            }
+        } catch (e: Exception) {
+            Log.d("Interceptor", e.toString())
+        }
+
+        return isRefreshExpired
     }
 }
