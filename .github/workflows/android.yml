@@ -19,28 +19,14 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: gradle
-
-      - name: Create local.properties
-        run: |
-          touch ./local.properties
-          echo "${{ secrets.BASE_URL }}" >> ./local.properties
-          echo "${{ secrets.REFRESH_API_URL }}" >> ./local.properties
-        shell: bash
-
-      - name: Access REFRESH_API_URL
-          run: |
-            echo REFRESH_API_URL=\"$REFRESH_API_URL\" > local.properties
-          shell: bash
-          env:
-            API_KEY: ${{ secrets.REFRESH_API_URL }}
-
-      - name: Access BASE_URL
-          run: |
-            echo BASE_URL=\"$BASE_URL\" > local.properties
-          shell: bash
-          env:
-            API_KEY: ${{ secrets.BASE_URL }}
-
+      - name: Decode BASE_URL
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: echo BASE_URL="$BASE_URL" > ./local.properties
+      - name: Decode REFRESH_API_URL
+        env:
+          REFRESH_API_URL: ${{ secrets.REFRESH_API_URL }}
+        run: echo REFRESH_API_URL="$REFRESH_API_URL" > ./local.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
