@@ -156,10 +156,10 @@ private fun bossSignInRequest(
 private fun saveTokenInfo(data: SignInResponseDTO, lifecycleScope: LifecycleCoroutineScope) {
     lifecycleScope.launch {
         AideBossApplication.getInstance().getTokenManager()
-            .setTokenData("Bearer " + data.accessToken, ACCESS)
+            .setTokenData("Bearer " + data.accessToken.replace("\"", ""), ACCESS)
         AideBossApplication.getInstance().getTokenManager()
-            .setTokenData(data.refreshToken, REFRESH)
+            .setTokenData(data.refreshToken.replace("\"", ""), REFRESH)
         AideBossApplication.getInstance().getTokenManager()
-            .setTokenData(data.expiredAt, EXPIRED)
+            .setTokenData(data.expiredAt.replace("\"", ""), EXPIRED)
     }
 }

@@ -1,7 +1,6 @@
 package com.g3c1.aide.remote.utils.token_handler
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
@@ -29,9 +28,7 @@ class TokenInterceptor : Interceptor {
         )
         runBlocking(Dispatchers.IO) {
             expiredAt = AideBossApplication.getInstance().getTokenManager().getTokenData(EXPIRED)
-                .replace("\"", "")
             refresh = AideBossApplication.getInstance().getTokenManager().getTokenData(REFRESH)
-                .replace("\"", "")
         }
         val expiredAtDateTime = LocalDateTime.parse(
             expiredAt,
@@ -48,24 +45,11 @@ class TokenInterceptor : Interceptor {
                 request.newBuilder().addHeader(
                     "Authorization",
                     AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
-                        .replace("\"", "")
                 ).build()
-            Log.d(
-                "Interceptor",
-                AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
-                    .replace("\"", "")
-            )
         }
-
         return proceed(if (ignorePath.contains(path)) request else accessTokenRequest)
     }
 
-    fun sendRefreshRequest(refresh: String): Boolean? {
-        val isRefreshExpired: Boolean? = try {
-            TokenRefreshAPI.sendTokenRefreshRequest(refresh)
-        } catch (e: Exception) {
-            null
-        }
-        return isRefreshExpired
-    }
+    fun sendRefreshRequest(refresh: String): Boolean? =
+        TokenRefreshAPI.sendTokenRefreshRequest(refresh)
 }
