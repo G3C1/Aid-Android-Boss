@@ -24,11 +24,6 @@ jobs:
         run: |
           touch ./local.properties
           echo "${{ secrets.BASE_URL }}" >> ./local.properties
-        shell: bash
-
-      - name: Create local.properties
-        run: |
-          touch ./local.properties
           echo "${{ secrets.REFRESH_API_URL }}" >> ./local.properties
         shell: bash
 
