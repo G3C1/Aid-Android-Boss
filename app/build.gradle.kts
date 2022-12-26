@@ -28,12 +28,12 @@ android {
         buildConfigField(
             "String",
             "REFRESH_API_URL",
-            properties.getProperty("REFRESH_API_URL")
+            properties.getProperty("REFRESH_API_URL")!!
         )
         buildConfigField(
             "String",
             "BASE_URL",
-            properties.getProperty("BASE_URL")
+            properties.getProperty("BASE_URL")!!
         )
     }
 
