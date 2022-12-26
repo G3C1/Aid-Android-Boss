@@ -1,16 +1,16 @@
-package com.g3c1.aide.remote.utils
+package com.g3c1.aide.remote.utils.token_handler
 
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.g3c1.aide.BuildConfig
 import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.g3c1.aide.remote.api.TokenRefreshAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import okhttp3.*
+import okhttp3.Interceptor
+import okhttp3.Request
+import okhttp3.Response
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -60,35 +60,12 @@ class TokenInterceptor : Interceptor {
         return proceed(if (ignorePath.contains(path)) request else accessTokenRequest)
     }
 
-    fun sendRefreshRequest(refresh: String): Boolean {
-        var isRefreshExpired = false
-        try {
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url(BuildConfig.REFRESH_API_URL)
-                .patch(RequestBody.create(MediaType.parse("application/json"), ""))
-                .addHeader("Refresh-Token", refresh)
-                .build()
-            val jsonParser = JsonParser()
-            val response = client.newCall(request).execute()
-            if (response.isSuccessful) {
-                val token = jsonParser.parse(response.body()!!.string()) as JsonObject
-                runBlocking {
-                    AideBossApplication.getInstance().getTokenManager()
-                        .setTokenData("Bearer " + token["accessToken"].toString(), ACCESS)
-                    AideBossApplication.getInstance().getTokenManager()
-                        .setTokenData(token["refreshToken"].toString(), REFRESH)
-                    AideBossApplication.getInstance().getTokenManager()
-                        .setTokenData(token["expiredAt"].toString(), EXPIRED)
-                }
-                Log.d("Interceptor", token.toString())
-            } else {
-                isRefreshExpired = true
-            }
+    fun sendRefreshRequest(refresh: String): Boolean? {
+        val isRefreshExpired: Boolean? = try {
+            TokenRefreshAPI.sendTokenRefreshRequest(refresh)
         } catch (e: Exception) {
-            Log.d("Interceptor", e.toString())
+            null
         }
-
         return isRefreshExpired
     }
 }

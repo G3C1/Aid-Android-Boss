@@ -3,7 +3,7 @@ package com.g3c1.aide.di.module
 import com.g3c1.aide.BuildConfig
 import com.g3c1.aide.remote.api.StoreAPI
 import com.g3c1.aide.remote.api.UserAPI
-import com.g3c1.aide.remote.utils.TokenInterceptor
+import com.g3c1.aide.remote.utils.token_handler.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
