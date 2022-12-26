@@ -21,10 +21,10 @@ jobs:
           cache: gradle
 
       - name: Create local.properties
-          run: |
-            touch ./local.properties
-            echo "${{ secrets.LOCAL_PROPERTIES }}" >> ./local.properties
-          shell: bash
+        run: |
+          touch ./local.properties
+          echo "${{ secrets.LOCAL_PROPERTIES }}" >> ./local.properties
+        shell: bash
 
       - name: Access BASE_URL
         run: |
