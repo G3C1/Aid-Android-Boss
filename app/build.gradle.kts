@@ -27,10 +27,10 @@ android {
             "REFRESH_API_URL",
             gradleLocalProperties(rootDir).getProperty("REFRESH_API_URL", "\"http://\"")
         )
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                gradleLocalProperties(rootDir).getProperty("BASE_URL","\"http://\"")
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            gradleLocalProperties(rootDir).getProperty("BASE_URL", "\"http://\"")
         )
     }
 
