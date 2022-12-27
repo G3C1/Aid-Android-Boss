@@ -20,7 +20,7 @@ import com.g3c1.aide.ui.theme.PretendardText
 @Composable
 fun StoreListItem(storeName: String, storeLogoImgUrl: String, storeDescription: String) {
     Card(
-        elevation = 10.dp,
+        elevation = 8.dp,
         shape = RoundedCornerShape(10.dp)
     ) {
         Row(
