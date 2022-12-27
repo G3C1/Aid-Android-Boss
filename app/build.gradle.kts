@@ -1,36 +1,36 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+    import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
-    kotlin("kapt")
-}
+    plugins {
+        id("com.android.application")
+        id("org.jetbrains.kotlin.android")
+        id("dagger.hilt.android.plugin")
+        kotlin("kapt")
+    }
 
-android {
-    namespace = "com.g3c1.aide"
-    compileSdk = Versions.CompileSdk
+    android {
+        namespace = "com.g3c1.aide"
+        compileSdk = Versions.CompileSdk
 
-    defaultConfig {
-        applicationId = "com.g3c1.aide"
-        minSdk = Versions.MinSdk
-        targetSdk = Versions.TargetSdk
-        versionCode = 1
-        versionName = "1.0"
+        defaultConfig {
+            applicationId = "com.g3c1.aide"
+            minSdk = Versions.MinSdk
+            targetSdk = Versions.TargetSdk
+            versionCode = 1
+            versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-        buildConfigField(
-            "String",
-            "REFRESH_API_URL",
-            gradleLocalProperties(rootDir).getProperty("REFRESH_API_URL","http://")
-        )
-        buildConfigField(
-            "String",
-            "BASE_URL",
-            gradleLocalProperties(rootDir).getProperty("BASE_URL","http://")
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            vectorDrawables {
+                useSupportLibrary = true
+            }
+            buildConfigField(
+                "String",
+                "REFRESH_API_URL",
+                gradleLocalProperties(rootDir).getProperty("REFRESH_API_URL","\"http://\"")
+            )
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                gradleLocalProperties(rootDir).getProperty("BASE_URL","\"http://\"")
         )
     }
 
