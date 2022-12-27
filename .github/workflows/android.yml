@@ -21,16 +21,16 @@ jobs:
           cache: gradle
 
       - name: access to BASE_URL
-          run: |
-            echo "BASE_URL=$BASE_URL" >> ./local.properties
-          env:
-            BASE_URL: ${{secrets.BASE_URL}}
+        run: |
+          echo "BASE_URL=$BASE_URL" >> ./local.properties
+        env:
+          BASE_URL: ${{secrets.BASE_URL}}
 
       - name: access to REFRESH_API_URL
-          run: |
-            echo "REFRESH_API_URL=$REFRESH_API_URL" >> ./local.properties
-          env:
-            REFRESH_API_URL: ${{secrets.REFRESH_API_URL}}
+        run: |
+          echo "REFRESH_API_URL=$REFRESH_API_URL" >> ./local.properties
+        env:
+          REFRESH_API_URL: ${{secrets.REFRESH_API_URL}}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
