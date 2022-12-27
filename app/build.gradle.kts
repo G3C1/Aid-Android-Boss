@@ -1,25 +1,37 @@
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
-    kotlin("kapt")
-}
+    import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
-android {
-    namespace = "com.g3c1.aide"
-    compileSdk = Versions.CompileSdk
+    plugins {
+        id("com.android.application")
+        id("org.jetbrains.kotlin.android")
+        id("dagger.hilt.android.plugin")
+        kotlin("kapt")
+    }
 
-    defaultConfig {
-        applicationId = "com.g3c1.aide"
-        minSdk = Versions.MinSdk
-        targetSdk = Versions.TargetSdk
-        versionCode = 1
-        versionName = "1.0"
+    android {
+        namespace = "com.g3c1.aide"
+        compileSdk = Versions.CompileSdk
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        defaultConfig {
+            applicationId = "com.g3c1.aide"
+            minSdk = Versions.MinSdk
+            targetSdk = Versions.TargetSdk
+            versionCode = 1
+            versionName = "1.0"
+
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            vectorDrawables {
+                useSupportLibrary = true
+            }
+            buildConfigField(
+                "String",
+                "REFRESH_API_URL",
+                gradleLocalProperties(rootDir).getProperty("REFRESH_API_URL","\"http://\"")
+            )
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                gradleLocalProperties(rootDir).getProperty("BASE_URL","\"http://\"")
+        )
     }
 
     buildTypes {
