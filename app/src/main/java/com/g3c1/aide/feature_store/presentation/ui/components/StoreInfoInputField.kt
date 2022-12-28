@@ -21,6 +21,7 @@ import com.g3c1.aide.ui.theme.*
 fun StoreInfoInputField(
     text: String,
     hint: String,
+    isDescription: Boolean,
     onValueChange: (String) -> Unit,
 ) {
     Column {
@@ -28,7 +29,8 @@ fun StoreInfoInputField(
             value = text,
             onValueChange = onValueChange,
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Gray,
                 textColor = DeepDarkGray,
@@ -55,7 +57,7 @@ fun StoreInfoInputField(
             ),
             visualTransformation = VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            maxLines = 1,
+            maxLines = if (isDescription) 4 else 1
         )
     }
 }
