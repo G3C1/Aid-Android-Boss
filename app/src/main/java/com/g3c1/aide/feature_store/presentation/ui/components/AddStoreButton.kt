@@ -31,7 +31,7 @@ fun AddStoreButton(
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.27f),
+                .fillMaxHeight(0.26f),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = if (!isError) Orange else DarkGray,
                 contentColor = Color.White
