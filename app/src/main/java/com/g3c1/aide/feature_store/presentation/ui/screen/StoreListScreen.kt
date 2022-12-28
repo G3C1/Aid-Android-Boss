@@ -17,7 +17,7 @@ import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun StoreListScreen(item: List<StoreInfoDTO>) {
+fun StoreListScreen(item: List<StoreInfoDTO>, moveStoreAddPage: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,7 +37,7 @@ fun StoreListScreen(item: List<StoreInfoDTO>) {
         }
         item {
             Spacer(modifier = Modifier.size(24.dp))
-            Box(modifier = Modifier.clickable { }) {
+            Box(modifier = Modifier.clickable { moveStoreAddPage() }) {
                 PretendardText(
                     text = "+가게 추가하기",
                     fontSize = 14.sp,

@@ -39,6 +39,7 @@ class SplashActivity : ComponentActivity() {
                         if (isRefreshExpired) AccountActivity::class.java else StoreActivity::class.java
                     )
                 )
+                finish()
             } else {
                 Toast.makeText(this@SplashActivity, "알수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }

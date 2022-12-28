@@ -1,4 +1,4 @@
-package com.g3c1.aide.feature_store.presentation.ui.components
+package com.g3c1.aide.feature_store.presentation.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,7 +16,7 @@ import com.g3c1.aide.ui.theme.Gray
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun StoreListEmptyScreen() {
+fun StoreListEmptyScreen(moveStoreAddPage: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -35,7 +35,7 @@ fun StoreListEmptyScreen() {
         Image(
             painter = painterResource(id = R.drawable.add_store_ic),
             contentDescription = "AddStoreIcon",
-            modifier = Modifier.clickable { }
+            modifier = Modifier.clickable { moveStoreAddPage() }
         )
         Spacer(modifier = Modifier.fillMaxHeight(0.03f))
     }
