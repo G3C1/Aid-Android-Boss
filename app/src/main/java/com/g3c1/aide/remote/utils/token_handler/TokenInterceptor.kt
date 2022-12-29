@@ -1,6 +1,7 @@
 package com.g3c1.aide.remote.utils.token_handler
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
@@ -22,6 +23,7 @@ class TokenInterceptor : Interceptor {
         lateinit var expiredAt: String
         val request = request()
         val path = request.url().encodedPath()
+        Log.d("Interceptor", path)
         val ignorePath = listOf(
             "/api/v2/user/",
             "/api/v2/user/login"

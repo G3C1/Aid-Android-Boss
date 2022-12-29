@@ -3,7 +3,9 @@ package com.g3c1.aide.di.module
 import com.g3c1.aide.feature_account.domain.repository.UserRepository
 import com.g3c1.aide.feature_account.domain.usecase.LoginUseCase
 import com.g3c1.aide.feature_account.domain.usecase.SignUpUseCase
+import com.g3c1.aide.feature_store.domain.repository.ImageRepository
 import com.g3c1.aide.feature_store.domain.repository.StoreRepository
+import com.g3c1.aide.feature_store.domain.usecase.GetImageUrlUseCase
 import com.g3c1.aide.feature_store.domain.usecase.GetMyStoresInfoUseCase
 import dagger.Module
 import dagger.Provides
@@ -29,4 +31,9 @@ object UseCaseModule {
     @Singleton
     fun provideGetMyStoresInfoUseCase(repository: StoreRepository): GetMyStoresInfoUseCase =
         GetMyStoresInfoUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetImageurlUseCase(repository: ImageRepository): GetImageUrlUseCase =
+        GetImageUrlUseCase(repository)
 }

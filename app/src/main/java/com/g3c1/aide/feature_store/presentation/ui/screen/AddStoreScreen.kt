@@ -1,7 +1,7 @@
 package com.g3c1.aide.feature_store.presentation.ui.screen
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -18,17 +18,21 @@ import com.g3c1.aide.feature_store.presentation.ui.components.AddStoreButton
 import com.g3c1.aide.feature_store.presentation.ui.components.AddStorePageTopBar
 import com.g3c1.aide.feature_store.presentation.ui.components.StoreImageField
 import com.g3c1.aide.feature_store.presentation.ui.components.StoreInfoInputField
+import com.g3c1.aide.feature_store.presentation.utils.getPath
+import com.g3c1.aide.feature_store.presentation.utils.toRequestBody
+import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel
 import com.g3c1.aide.ui.theme.PretendardText
+import java.io.File
+
 
 @Composable
-fun AddStoreScreen(goBackToStoreListPage: () -> Unit) {
+fun AddStoreScreen(viewModel: StoreViewModel, context: Context, goBackToStoreListPage: () -> Unit) {
     val storeImage = remember {
         mutableStateOf<Uri?>(null)
     }
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null)
-                storeImage.value = uri
+            if (uri != null) storeImage.value = uri
         }
     val storeName = remember {
         mutableStateOf("")
@@ -89,14 +93,10 @@ fun AddStoreScreen(goBackToStoreListPage: () -> Unit) {
                     isDescription = true,
                     onValueChange = {
                         storeDesCription.value = it
-                    }
-                )
+                    })
             }
             AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-                Log.d(
-                    "StoreInfo",
-                    "uri: ${storeImage.value}, name: ${storeName.value}, Description: ${storeDesCription.value}"
-                )
+                viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
             }
         }
     }
