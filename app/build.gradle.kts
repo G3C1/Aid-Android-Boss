@@ -87,6 +87,7 @@ dependencies {
     implementation(Dependency.Libraries.RETROFIT)
     implementation(Dependency.Libraries.RETROFIT_CONVERTER_GSON)
     implementation(Dependency.Libraries.OKHTTP)
+    implementation(Dependency.Libraries.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(Dependency.Libraries.DATASTORE)
     implementation(Dependency.Libraries.DATASTORE_CORE)
     implementation(Dependency.Libraries.COIL)
