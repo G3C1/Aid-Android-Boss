@@ -2,6 +2,8 @@ package com.g3c1.aide.feature_store.presentation.ui.screen
 
 import android.content.Context
 import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -32,7 +34,7 @@ fun AddStoreScreen(viewModel: StoreViewModel, context: Context, goBackToStoreLis
     }
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) storeImage.value = uri
+            storeImage.value = uri
         }
     val storeName = remember {
         mutableStateOf("")
@@ -56,7 +58,7 @@ fun AddStoreScreen(viewModel: StoreViewModel, context: Context, goBackToStoreLis
         ) {
             Spacer(modifier = Modifier.fillMaxHeight(0.07f))
             StoreImageField(storeImage.value) {
-                launcher.launch("image/*")
+                launcher.launch(MediaStore.Images.Media.CONTENT_TYPE)
             }
             Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Column(
@@ -96,6 +98,7 @@ fun AddStoreScreen(viewModel: StoreViewModel, context: Context, goBackToStoreLis
                     })
             }
             AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
+                Log.d("AddStore", storeImage.value!!.getPath(context)!!)
                 viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
             }
         }
