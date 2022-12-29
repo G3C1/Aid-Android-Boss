@@ -3,6 +3,7 @@ package com.g3c1.aide.feature_store.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.g3c1.aide.feature_store.data.dto.ImageUrlDTO
 import com.g3c1.aide.feature_store.data.dto.MyStoresInfoDTO
 import com.g3c1.aide.feature_store.domain.usecase.GetImageUrlUseCase
 import com.g3c1.aide.feature_store.domain.usecase.GetMyStoresInfoUseCase
@@ -22,7 +23,7 @@ class StoreViewModel @Inject constructor(
     val getMyStoresRes: MutableStateFlow<ApiState<MyStoresInfoDTO>> =
         MutableStateFlow(ApiState.Loading())
 
-    val gerImageUrlRes: MutableStateFlow<ApiState<String>> =
+    val gerImageUrlRes: MutableStateFlow<ApiState<ImageUrlDTO>> =
         MutableStateFlow(ApiState.Loading())
 
     fun getMyStoresInfoRequest() = viewModelScope.launch {
@@ -42,7 +43,6 @@ class StoreViewModel @Inject constructor(
             .catch {
                 Log.d("GetImageUrl", "body: ${it.message}")
             }.collect { value ->
-                Log.d("getImageUrl", value.toString())
                 gerImageUrlRes.value = value
             }
     }

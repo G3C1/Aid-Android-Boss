@@ -1,6 +1,9 @@
 package com.g3c1.aide.feature_store.presentation.ui.screen
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -16,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.g3c1.aide.feature_store.presentation.ui.components.AddStoreButton
 import com.g3c1.aide.feature_store.presentation.ui.components.AddStorePageTopBar
 import com.g3c1.aide.feature_store.presentation.ui.components.StoreImageField
@@ -23,12 +28,19 @@ import com.g3c1.aide.feature_store.presentation.ui.components.StoreInfoInputFiel
 import com.g3c1.aide.feature_store.presentation.utils.getPath
 import com.g3c1.aide.feature_store.presentation.utils.toRequestBody
 import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel
+import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
+import kotlinx.coroutines.launch
 import java.io.File
 
 
 @Composable
-fun AddStoreScreen(viewModel: StoreViewModel, context: Context, goBackToStoreListPage: () -> Unit) {
+fun AddStoreScreen(
+    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    viewModel: StoreViewModel,
+    context: Context,
+    goBackToStoreListPage: () -> Unit
+) {
     val storeImage = remember {
         mutableStateOf<Uri?>(null)
     }
@@ -98,8 +110,39 @@ fun AddStoreScreen(viewModel: StoreViewModel, context: Context, goBackToStoreLis
                     })
             }
             AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-                Log.d("AddStore", storeImage.value!!.getPath(context)!!)
+                if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                        context as Activity,
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        1
+                    )
+                }
                 viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
+                getImageUrlRequest(viewModel, lifecycleCoroutineScope) {
+                    Log.d("GetImageUrl", "성공!")
+                }
+            }
+        }
+    }
+}
+
+private fun getImageUrlRequest(
+    viewModel: StoreViewModel,
+    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    onSuccess: () -> Unit
+) {
+    lifecycleCoroutineScope.launch {
+        viewModel.gerImageUrlRes.collect {
+            when (it) {
+                is ApiState.Success -> {
+                    Log.d("GetImageUrl", it.data!!.imageUrl)
+                    onSuccess()
+                }
+                is ApiState.Error -> {
+                    Log.d("GetImageUrl", it.status.toString())
+                }
+                is ApiState.Loading -> {
+                }
             }
         }
     }

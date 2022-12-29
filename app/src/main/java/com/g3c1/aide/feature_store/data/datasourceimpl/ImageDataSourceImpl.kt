@@ -1,6 +1,7 @@
 package com.g3c1.aide.feature_store.data.datasourceimpl
 
 import com.g3c1.aide.feature_store.data.datasource.ImageDataSource
+import com.g3c1.aide.feature_store.data.dto.ImageUrlDTO
 import com.g3c1.aide.remote.api.ImageAPI
 import com.g3c1.aide.remote.utils.ApiState
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class ImageDataSourceImpl @Inject constructor(
     private val api: ImageAPI
 ) : ImageDataSource {
-    override suspend fun getImageUrl(file: MultipartBody.Part): Flow<ApiState<String>> {
+    override suspend fun getImageUrl(file: MultipartBody.Part): Flow<ApiState<ImageUrlDTO>> {
         return flow {
             try {
                 val response = api.getImageUrl(file)

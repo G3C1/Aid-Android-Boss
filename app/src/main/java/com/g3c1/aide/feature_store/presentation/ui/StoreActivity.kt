@@ -59,6 +59,7 @@ class StoreActivity: ComponentActivity() {
                                     }
                                     composable("StoreAddPage") {
                                         AddStoreScreen(
+                                            lifecycleScope,
                                             viewModel = viewModel(LocalContext.current as StoreActivity),
                                             this@StoreActivity
                                         ) {
