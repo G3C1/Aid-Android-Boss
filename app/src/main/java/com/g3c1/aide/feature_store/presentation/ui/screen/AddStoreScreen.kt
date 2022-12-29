@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -54,7 +55,6 @@ fun AddStoreScreen(
     val storeDesCription = remember {
         mutableStateOf("")
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,6 +70,7 @@ fun AddStoreScreen(
         ) {
             Spacer(modifier = Modifier.fillMaxHeight(0.07f))
             StoreImageField(storeImage.value) {
+                permissionManager(context = context)
                 launcher.launch(MediaStore.Images.Media.CONTENT_TYPE)
             }
             Spacer(modifier = Modifier.fillMaxHeight(0.1f))
@@ -110,16 +111,18 @@ fun AddStoreScreen(
                     })
             }
             AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-                if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                        context as Activity,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        1
-                    )
-                }
+
                 viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
-                getImageUrlRequest(viewModel, lifecycleCoroutineScope) {
-                    Log.d("GetImageUrl", "성공!")
+                getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
+                    viewModel.addStore(
+                        name = storeName.value,
+                        description = storeDesCription.value,
+                        imageUrl = viewModel.gerImageUrlRes.value.data!!.imageUrl
+                    )
+                    addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
+                        Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                        goBackToStoreListPage()
+                    }
                 }
             }
         }
@@ -129,6 +132,7 @@ fun AddStoreScreen(
 private fun getImageUrlRequest(
     viewModel: StoreViewModel,
     lifecycleCoroutineScope: LifecycleCoroutineScope,
+    context: Context,
     onSuccess: () -> Unit
 ) {
     lifecycleCoroutineScope.launch {
@@ -139,11 +143,47 @@ private fun getImageUrlRequest(
                     onSuccess()
                 }
                 is ApiState.Error -> {
-                    Log.d("GetImageUrl", it.status.toString())
+                    Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
                 }
             }
         }
+    }
+}
+
+private fun addStoreRequest(
+    viewModel: StoreViewModel,
+    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    context: Context,
+    onSuccess: () -> Unit
+) {
+    lifecycleCoroutineScope.launch {
+        viewModel.addStoreRes.collect {
+            when (it) {
+                is ApiState.Success -> {
+                    Log.d("AddStore", it.status.toString())
+                    onSuccess()
+                }
+                is ApiState.Error -> {
+                    Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                is ApiState.Loading -> {
+                }
+            }
+        }
+    }
+}
+
+private fun permissionManager(context: Context) {
+    if (context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ),
+            1
+        )
     }
 }
