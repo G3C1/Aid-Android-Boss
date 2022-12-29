@@ -28,11 +28,11 @@ class StoreActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getMyStoresInfo()
+        storeViewModel.getMyStoresInfoRequest()
+        getMyStoresRequest()
     }
 
-    private fun getMyStoresInfo() {
-        storeViewModel.getMyStoresInfoRequest()
+    private fun getMyStoresRequest() {
         lifecycleScope.launch {
             storeViewModel.getMyStoresRes.collect { result ->
                 when (result) {
@@ -43,28 +43,31 @@ class StoreActivity: ComponentActivity() {
                             Column(modifier = Modifier.fillMaxSize()) {
                                 NavHost(
                                     navController = navController,
-                                    startDestination = "StoreListScreen"
+                                    startDestination = "SellectStoreScreen"
                                 ) {
-                                    composable("StoreListScreen") {
+                                    composable("SellectStoreScreen") {
                                         SelectStoreScreen(
+                                            viewModel = viewModel(LocalContext.current as StoreActivity),
+                                            lifecycleCoroutineScope = lifecycleScope,
+                                            context = this@StoreActivity,
                                             bossName = result.data!!.userName,
-                                            storeInfoList = result.data.storeList
+                                            storeList = result.data.storeList
                                         ) {
-                                            navController.navigate("StoreAddPage") {
-                                                popUpTo("StoreAddPage") {
+                                            navController.navigate("StoreAddScreen") {
+                                                popUpTo("StoreAddScreen") {
                                                     inclusive = true
                                                 }
                                             }
                                         }
                                     }
-                                    composable("StoreAddPage") {
+                                    composable("StoreAddScreen") {
                                         AddStoreScreen(
-                                            lifecycleScope,
+                                            lifecycleCoroutineScope = lifecycleScope,
                                             viewModel = viewModel(LocalContext.current as StoreActivity),
-                                            this@StoreActivity
+                                            context = this@StoreActivity
                                         ) {
-                                            navController.navigate("StoreListScreen") {
-                                                popUpTo("StoreListScreen") {
+                                            navController.navigate("SellectStoreScreen") {
+                                                popUpTo("SellectStoreScreen") {
                                                     inclusive = true
                                                 }
                                             }

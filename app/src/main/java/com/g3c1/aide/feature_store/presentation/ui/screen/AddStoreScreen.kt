@@ -166,6 +166,7 @@ private fun addStoreRequest(
                     onSuccess()
                 }
                 is ApiState.Error -> {
+                    Log.d("AddStore", it.status.toString())
                     Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
