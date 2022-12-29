@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ImageRepositoryImpl @Inject constructor(
     private val dataSoure: ImageDataSource
-) : ImageRepository {
+): ImageRepository {
     override suspend fun getImageUrl(file: MultipartBody.Part): Flow<ApiState<ImageUrlDTO>> {
         return dataSoure.getImageUrl(file)
     }
