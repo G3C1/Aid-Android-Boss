@@ -13,7 +13,7 @@ object Versions {
 
     const val ACTIVITY_COMPOSE = "1.3.1"
     const val COMPOSE = "1.2.0-alpha03"
-    const val COMPOSE_NAV = "2.5.1"
+    const val COMPOSE_NAV = "2.5.3"
 
     const val HILT = "2.44"
 
