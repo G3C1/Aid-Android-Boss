@@ -31,6 +31,9 @@ fun SplashScreen() {
             color = Color.White
         )
         Spacer(modifier = Modifier.size(22.dp))
-        Image(painter = painterResource(id = R.drawable.aide_logo), contentDescription = "AidLogo")
+        Image(
+            painter = painterResource(id = R.drawable.aid_boss_logo),
+            contentDescription = "AidLogo"
+        )
     }
 }
