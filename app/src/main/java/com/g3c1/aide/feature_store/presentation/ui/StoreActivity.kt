@@ -47,9 +47,6 @@ class StoreActivity: ComponentActivity() {
                                 ) {
                                     composable("SellectStoreScreen") {
                                         SelectStoreScreen(
-                                            viewModel = viewModel(LocalContext.current as StoreActivity),
-                                            lifecycleCoroutineScope = lifecycleScope,
-                                            context = this@StoreActivity,
                                             bossName = result.data!!.userName,
                                             storeList = result.data.storeList
                                         ) {
