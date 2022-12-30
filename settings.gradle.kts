@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Aide-Android-Boss"
-include ':app'
+include(":app")
