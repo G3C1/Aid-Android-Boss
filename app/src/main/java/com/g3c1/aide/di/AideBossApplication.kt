@@ -8,15 +8,15 @@ import dagger.hilt.android.HiltAndroidApp
 class AideBossApplication: Application() {
     private lateinit var tokenManager: TokenManager
 
-    companion object {
-        private lateinit var aideBossApplication: AideBossApplication
-        fun getInstance(): AideBossApplication = aideBossApplication
-    }
-
     override fun onCreate() {
         super.onCreate()
         aideBossApplication = this
         tokenManager = TokenManager(this)
+    }
+
+    companion object {
+        private lateinit var aideBossApplication: AideBossApplication
+        fun getInstance(): AideBossApplication = aideBossApplication
     }
 
     fun getTokenManager(): TokenManager = tokenManager

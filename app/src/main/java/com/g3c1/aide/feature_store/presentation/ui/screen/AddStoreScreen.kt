@@ -111,7 +111,6 @@ fun AddStoreScreen(
                     })
             }
             AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-
                 viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
                 getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
                     viewModel.addStore(
@@ -197,7 +196,8 @@ private fun getMyStoresInfoRequest(
                     ).show()
                     viewModel.getMyStoresRes.value = ApiState.Loading()
                 }
-                is ApiState.Loading -> {}
+                is ApiState.Loading -> {
+                }
             }
         }
     }

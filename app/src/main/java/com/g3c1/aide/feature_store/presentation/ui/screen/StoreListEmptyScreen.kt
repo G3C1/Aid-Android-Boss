@@ -16,7 +16,7 @@ import com.g3c1.aide.ui.theme.Gray
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun StoreListEmptyScreen(moveStoreAddPage: () -> Unit) {
+fun  StoreListEmptyScreen(moveStoreAddPage: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

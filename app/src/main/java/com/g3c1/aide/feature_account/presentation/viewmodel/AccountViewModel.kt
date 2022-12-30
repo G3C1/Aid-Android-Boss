@@ -3,11 +3,13 @@ package com.g3c1.aide.feature_account.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.data.dto.req.SignInUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.req.SignUpUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
 import com.g3c1.aide.feature_account.domain.usecase.LoginUseCase
 import com.g3c1.aide.feature_account.domain.usecase.SignUpUseCase
+import com.g3c1.aide.feature_account.presentation.utils.TokenType
 import com.g3c1.aide.remote.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +39,18 @@ class AccountViewModel @Inject constructor(
             Log.d("SignIn", "body: ${it.message}")
         }.collect { value ->
             signInRes.value = value
+            if ((200..299).contains(value.status)) {
+                AideBossApplication.getInstance().getTokenManager()
+                    .setTokenData("Bearer " + value.data!!.accessToken, TokenType.ACCESS)
+                AideBossApplication.getInstance().getTokenManager()
+                    .setTokenData(value.data.refreshToken, TokenType.REFRESH)
+                AideBossApplication.getInstance().getTokenManager()
+                    .setTokenData(value.data.expiredAt, TokenType.EXPIRED)
+                Log.d("AccountVM",
+                    AideBossApplication.getInstance().getTokenManager()
+                        .getTokenData(TokenType.ACCESS)
+                )
+            }
         }
     }
 
