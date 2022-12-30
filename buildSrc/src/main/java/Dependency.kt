@@ -1,4 +1,9 @@
 object Dependency {
+    object GradlePlugins {
+        const val ANDROID_APPLICATION = "com.android.application"
+        const val ANDROID_LIBRARY = "com.android.library"
+        const val KOTLIN = "org.jetbrains.kotlin.android"
+    }
 
     object AndroidX {
         const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
@@ -22,6 +27,8 @@ object Dependency {
     }
 
     object Google {
+        const val HILT_ANDROID_GRADLE =
+            "com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}"
         const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
         const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
         const val SYSTEM_UI_CONTROLLER =
