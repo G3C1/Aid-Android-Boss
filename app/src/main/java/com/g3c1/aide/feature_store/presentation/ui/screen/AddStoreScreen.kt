@@ -22,10 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.g3c1.aide.feature_store.presentation.ui.components.AddStoreButton
-import com.g3c1.aide.feature_store.presentation.ui.components.AddStorePageTopBar
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreImageField
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreInfoInputField
+import com.g3c1.aide.component.button.AddStoreButton
+import com.g3c1.aide.component.topbar.AddStorePageTopBar
+import com.g3c1.aide.component.filed.StoreImageField
+import com.g3c1.aide.component.filed.StoreInfoInputField
 import com.g3c1.aide.feature_store.presentation.utils.getPath
 import com.g3c1.aide.feature_store.presentation.utils.toRequestBody
 import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel

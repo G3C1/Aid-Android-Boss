@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.g3c1.aide.feature_store.data.dto.StoreInfoDTO
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreListItem
+import com.g3c1.aide.component.item.StoreListItem
 import com.g3c1.aide.ui.theme.Gray
 import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText

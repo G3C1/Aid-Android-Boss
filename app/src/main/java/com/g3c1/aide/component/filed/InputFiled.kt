@@ -1,4 +1,4 @@
-package com.g3c1.aide.feature_account.presentation.ui.components
+package com.g3c1.aide.component.filed
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

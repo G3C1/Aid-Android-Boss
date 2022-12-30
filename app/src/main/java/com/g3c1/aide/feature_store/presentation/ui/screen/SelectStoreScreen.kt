@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.g3c1.aide.feature_store.data.dto.StoreInfoDTO
-import com.g3c1.aide.feature_store.presentation.ui.components.TopBar
+import com.g3c1.aide.component.topbar.TopBar
 import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel
 import com.g3c1.aide.remote.utils.ApiState
 import kotlinx.coroutines.launch

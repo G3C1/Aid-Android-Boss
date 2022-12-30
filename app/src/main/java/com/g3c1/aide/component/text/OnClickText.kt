@@ -1,4 +1,4 @@
-package com.g3c1.aide.feature_account.presentation.ui.components
+package com.g3c1.aide.component.text
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.Text

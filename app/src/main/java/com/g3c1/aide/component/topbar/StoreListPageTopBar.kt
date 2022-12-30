@@ -1,4 +1,4 @@
-package com.g3c1.aide.feature_store.presentation.ui.components
+package com.g3c1.aide.component.topbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

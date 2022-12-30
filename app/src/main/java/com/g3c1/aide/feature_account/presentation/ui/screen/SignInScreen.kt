@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
-import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
-import com.g3c1.aide.feature_account.presentation.ui.components.InputField
-import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
+import com.g3c1.aide.component.button.AccountButton
+import com.g3c1.aide.component.filed.InputField
+import com.g3c1.aide.component.text.OnClickText
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
 import com.g3c1.aide.feature_account.presentation.viewmodel.AccountViewModel
 import com.g3c1.aide.remote.utils.ApiState

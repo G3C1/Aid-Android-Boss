@@ -1,4 +1,4 @@
-package com.g3c1.aide.feature_account.presentation.ui.components
+package com.g3c1.aide.component.button
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,14 +16,13 @@ import com.g3c1.aide.ui.theme.Orange
 import com.g3c1.aide.ui.theme.PretendardText
 
 @Composable
-fun AccountButton(
-    text: String,
+fun AddStoreButton(
     isError: Boolean,
     onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(0.95f)
             .padding(bottom = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
@@ -31,8 +30,8 @@ fun AccountButton(
         Button(
             onClick = onClick,
             modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.09f),
+                .fillMaxWidth()
+                .fillMaxHeight(0.26f),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = if (!isError) Orange else DarkGray,
                 contentColor = Color.White
@@ -41,7 +40,7 @@ fun AccountButton(
             enabled = !isError
         ) {
             PretendardText(
-                text = text,
+                text = "추가",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White

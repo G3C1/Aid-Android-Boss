@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.g3c1.aide.feature_account.presentation.ui.components.AccountButton
-import com.g3c1.aide.feature_account.presentation.ui.components.InputField
-import com.g3c1.aide.feature_account.presentation.ui.components.OnClickText
+import com.g3c1.aide.component.button.AccountButton
+import com.g3c1.aide.component.filed.InputField
+import com.g3c1.aide.component.text.OnClickText
 import com.g3c1.aide.feature_account.presentation.utils.Utils.checkIdPattern
 import com.g3c1.aide.feature_account.presentation.utils.Utils.checkPasswordIsSame
 import com.g3c1.aide.feature_account.presentation.utils.Utils.checkPasswordPattern
