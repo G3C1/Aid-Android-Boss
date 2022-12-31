@@ -116,14 +116,13 @@ private fun bossSignInRequest(
         viewModel.signInRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    success()
-                    Log.d("SignInScreen", "로그인 성공!")
                     AideBossApplication.getInstance().getTokenManager()
                         .setTokenData("Bearer " + it.data!!.accessToken, TokenType.ACCESS)
                     AideBossApplication.getInstance().getTokenManager()
                         .setTokenData(it.data.refreshToken, TokenType.REFRESH)
                     AideBossApplication.getInstance().getTokenManager()
                         .setTokenData(it.data.expiredAt, TokenType.EXPIRED)
+                    success()
                 }
                 is ApiState.Error -> {
                     Log.d("SignIn", it.message.toString())

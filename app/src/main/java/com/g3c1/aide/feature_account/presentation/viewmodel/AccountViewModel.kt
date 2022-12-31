@@ -39,18 +39,6 @@ class AccountViewModel @Inject constructor(
             Log.d("SignIn", "body: ${it.message}")
         }.collect { value ->
             signInRes.value = value
-            if ((200..299).contains(value.status)) {
-                AideBossApplication.getInstance().getTokenManager()
-                    .setTokenData("Bearer " + value.data!!.accessToken, TokenType.ACCESS)
-                AideBossApplication.getInstance().getTokenManager()
-                    .setTokenData(value.data.refreshToken, TokenType.REFRESH)
-                AideBossApplication.getInstance().getTokenManager()
-                    .setTokenData(value.data.expiredAt, TokenType.EXPIRED)
-                Log.d("AccountVM",
-                    AideBossApplication.getInstance().getTokenManager()
-                        .getTokenData(TokenType.ACCESS)
-                )
-            }
         }
     }
 

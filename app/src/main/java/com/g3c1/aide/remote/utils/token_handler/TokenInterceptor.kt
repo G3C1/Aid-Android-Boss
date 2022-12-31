@@ -1,7 +1,6 @@
 package com.g3c1.aide.remote.utils.token_handler
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.presentation.utils.TokenType.*
@@ -24,31 +23,31 @@ class TokenInterceptor : Interceptor {
             "/v2/user", "/v2/user/login"
         )
         if (ignorePath.contains(path)) {
-            Log.d("Interceptor", request.header("Authorization").toString())
             return chain.proceed(request)
-        } else {
-            runBlocking {
-                val expiredAt =
-                    AideBossApplication.getInstance().getTokenManager().getTokenData(EXPIRED)
-                val refresh =
-                    AideBossApplication.getInstance().getTokenManager().getTokenData(REFRESH)
-                if (expiredAt.isNotEmpty()) {
-                    val expiredAtDateTime = LocalDateTime.parse(
-                        expiredAt, DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                    )
-                    val currentTime = LocalDateTime.now(ZoneId.systemDefault())
-                    if (currentTime.isAfter(expiredAtDateTime)) {
-                        sendRefreshRequest(refresh)
-                    }
-                }
-                accessTokenRequest = request.newBuilder().addHeader(
-                    "Authorization",
-                    AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
-                ).build()
-            }
-            Log.d("Interceptor", accessTokenRequest.header("Authorization").toString())
-            return chain.proceed(accessTokenRequest)
         }
+        runBlocking {
+            val expiredAt =
+                AideBossApplication.getInstance().getTokenManager().getTokenData(EXPIRED)
+            val refresh =
+                AideBossApplication.getInstance().getTokenManager().getTokenData(REFRESH)
+            if (expiredAt.isNotEmpty()) {
+                val expiredAtDateTime = LocalDateTime.parse(
+                    expiredAt, DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                )
+                val currentTime = LocalDateTime.parse(
+                    LocalDateTime.now(ZoneId.systemDefault()).toString(),
+                    DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                )
+                if (currentTime.isAfter(expiredAtDateTime)) {
+                    sendRefreshRequest(refresh)
+                }
+            }
+            accessTokenRequest = request.newBuilder().addHeader(
+                "Authorization",
+                AideBossApplication.getInstance().getTokenManager().getTokenData(ACCESS)
+            ).build()
+        }
+        return chain.proceed(accessTokenRequest)
     }
 
     private fun sendRefreshRequest(refresh: String): Boolean? =
