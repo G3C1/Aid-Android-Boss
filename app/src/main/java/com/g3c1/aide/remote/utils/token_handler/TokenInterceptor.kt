@@ -10,8 +10,6 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 class TokenInterceptor : Interceptor {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,12 +30,9 @@ class TokenInterceptor : Interceptor {
                 AideBossApplication.getInstance().getTokenManager().getTokenData(REFRESH)
             if (expiredAt.isNotEmpty()) {
                 val expiredAtDateTime = LocalDateTime.parse(
-                    expiredAt, DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                    expiredAt
                 )
-                val currentTime = LocalDateTime.parse(
-                    LocalDateTime.now(ZoneId.systemDefault()).toString(),
-                    DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                )
+                val currentTime = LocalDateTime.now()
                 if (currentTime.isAfter(expiredAtDateTime)) {
                     sendRefreshRequest(refresh)
                 }
