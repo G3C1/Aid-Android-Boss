@@ -11,7 +11,7 @@ import okhttp3.Request
 import okhttp3.Response
 import java.time.LocalDateTime
 
-class TokenInterceptor : Interceptor {
+class TokenInterceptor: Interceptor {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun intercept(chain: Interceptor.Chain): Response = with(chain) {
         lateinit var accessTokenRequest: Request
