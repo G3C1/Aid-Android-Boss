@@ -11,7 +11,7 @@ import com.g3c1.aide.feature_account.presentation.ui.AccountActivity
 import com.g3c1.aide.feature_account.presentation.utils.TokenType
 import com.g3c1.aide.feature_splash.presentation.ui.screen.SplashScreen
 import com.g3c1.aide.feature_store.presentation.ui.StoreActivity
-import com.g3c1.aide.remote.utils.token_handler.TokenInterceptor
+import com.g3c1.aide.remote.api.TokenRefreshAPI
 import com.g3c1.aide.ui.theme.Orange
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +28,7 @@ class SplashActivity : ComponentActivity() {
             SplashScreen()
         }
         lifecycleScope.launch {
-            val isRefreshExpired = TokenInterceptor().sendRefreshRequest(
+            val isRefreshExpired = sendRefreshRequest(
                 AideBossApplication.getInstance().getTokenManager().getTokenData(TokenType.REFRESH)
             )
             delay(1000)
@@ -46,3 +46,6 @@ class SplashActivity : ComponentActivity() {
         }
     }
 }
+
+private fun sendRefreshRequest(refresh: String): Boolean? =
+    TokenRefreshAPI.sendTokenRefreshRequest(refresh)

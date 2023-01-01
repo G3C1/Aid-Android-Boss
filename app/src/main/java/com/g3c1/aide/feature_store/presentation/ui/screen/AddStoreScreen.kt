@@ -111,7 +111,6 @@ fun AddStoreScreen(
                     })
             }
             AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-
                 viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
                 getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
                     viewModel.addStore(
@@ -121,6 +120,7 @@ fun AddStoreScreen(
                     )
                     addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
                         Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                        getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
                         goBackToStoreListPage()
                     }
                 }
@@ -143,7 +143,8 @@ private fun getImageUrlRequest(
                     onSuccess()
                 }
                 is ApiState.Error -> {
-                    Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    Log.d("GetImageUrl", it.status.toString())
+                    Toast.makeText(context, "이미지 용량이 너무 큽니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
                 }
@@ -168,6 +169,32 @@ private fun addStoreRequest(
                 is ApiState.Error -> {
                     Log.d("AddStore", it.status.toString())
                     Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+                is ApiState.Loading -> {
+                }
+            }
+        }
+    }
+}
+
+private fun getMyStoresInfoRequest(
+    viewModel: StoreViewModel,
+    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    context: Context,
+) {
+    viewModel.getMyStoresInfoRequest()
+    lifecycleCoroutineScope.launch {
+        viewModel.getMyStoresRes.collect { result ->
+            when (result) {
+                is ApiState.Success -> {
+                    Log.d("StoreActivity", result.data.toString())
+                }
+                is ApiState.Error -> {
+                    Log.d("StoreActivity", result.status.toString())
+                    Toast.makeText(
+                        context, "알수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT
+                    ).show()
+                    viewModel.getMyStoresRes.value = ApiState.Loading()
                 }
                 is ApiState.Loading -> {
                 }

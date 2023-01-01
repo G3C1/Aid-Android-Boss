@@ -3,11 +3,13 @@ package com.g3c1.aide.feature_account.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.g3c1.aide.di.AideBossApplication
 import com.g3c1.aide.feature_account.data.dto.req.SignInUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.req.SignUpUserInfoDTO
 import com.g3c1.aide.feature_account.data.dto.res.SignInResponseDTO
 import com.g3c1.aide.feature_account.domain.usecase.LoginUseCase
 import com.g3c1.aide.feature_account.domain.usecase.SignUpUseCase
+import com.g3c1.aide.feature_account.presentation.utils.TokenType
 import com.g3c1.aide.remote.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
