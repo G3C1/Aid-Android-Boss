@@ -22,10 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.g3c1.aide.feature_store.presentation.ui.components.AddStoreButton
-import com.g3c1.aide.feature_store.presentation.ui.components.AddStorePageTopBar
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreImageField
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreInfoInputField
+import com.g3c1.aide.feature_store.presentation.ui.components.*
 import com.g3c1.aide.feature_store.presentation.utils.getPath
 import com.g3c1.aide.feature_store.presentation.utils.toRequestBody
 import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel
@@ -55,78 +52,86 @@ fun AddStoreScreen(
     val storeDesCription = remember {
         mutableStateOf("")
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        AddStorePageTopBar {
-            goBackToStoreListPage()
-        }
+    val isLoading = remember {
+        mutableStateOf(false)
+    }
+    Box {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .background(Color.White)
         ) {
-            Spacer(modifier = Modifier.fillMaxHeight(0.07f))
-            StoreImageField(storeImage.value) {
-                permissionManager(context = context)
-                launcher.launch(MediaStore.Images.Media.CONTENT_TYPE)
+            AddStorePageTopBar {
+                goBackToStoreListPage()
             }
-            Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Column(
-                Modifier
-                    .fillMaxWidth(0.9f)
-                    .fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PretendardText(
-                    text = "가게 이름을 정해주세요.",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.fillMaxHeight(0.01f))
-                StoreInfoInputField(
-                    text = storeName.value,
-                    hint = "가게 이름",
-                    isDescription = false,
-                    onValueChange = {
-                        storeName.value = it
-                    }
-                )
                 Spacer(modifier = Modifier.fillMaxHeight(0.07f))
-                PretendardText(
-                    text = "가게 설명을 적어주세요.",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.fillMaxHeight(0.01f))
-                StoreInfoInputField(
-                    text = storeDesCription.value,
-                    hint = "가게 설명",
-                    isDescription = true,
-                    onValueChange = {
-                        storeDesCription.value = it
-                    })
-            }
-            AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-                viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
-                getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
-                    viewModel.addStore(
-                        name = storeName.value,
-                        description = storeDesCription.value,
-                        imageUrl = viewModel.gerImageUrlRes.value.data!!.imageUrl
+                StoreImageField(storeImage.value) {
+                    permissionManager(context = context)
+                    launcher.launch(MediaStore.Images.Media.CONTENT_TYPE)
+                }
+                Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+                Column(
+                    Modifier
+                        .fillMaxWidth(0.9f)
+                        .fillMaxWidth()
+                ) {
+                    PretendardText(
+                        text = "가게 이름을 정해주세요.",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
                     )
-                    addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
-                        Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
-                        getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
-                        goBackToStoreListPage()
+                    Spacer(modifier = Modifier.fillMaxHeight(0.01f))
+                    StoreInfoInputField(
+                        text = storeName.value,
+                        hint = "가게 이름",
+                        isDescription = false,
+                        onValueChange = {
+                            storeName.value = it
+                        }
+                    )
+                    Spacer(modifier = Modifier.fillMaxHeight(0.07f))
+                    PretendardText(
+                        text = "가게 설명을 적어주세요.",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.fillMaxHeight(0.01f))
+                    StoreInfoInputField(
+                        text = storeDesCription.value,
+                        hint = "가게 설명",
+                        isDescription = true,
+                        onValueChange = {
+                            storeDesCription.value = it
+                        })
+                }
+                AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
+                    isLoading.value = true
+                    viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
+                    getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
+                        viewModel.addStore(
+                            name = storeName.value,
+                            description = storeDesCription.value,
+                            imageUrl = viewModel.gerImageUrlRes.value.data!!.imageUrl
+                        )
+                        addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
+                            isLoading.value = false
+                            Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                            getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
+                            goBackToStoreListPage()
+                        }
                     }
                 }
             }
         }
     }
+    Progressbar(isLoading.value)
 }
 
 private fun getImageUrlRequest(
