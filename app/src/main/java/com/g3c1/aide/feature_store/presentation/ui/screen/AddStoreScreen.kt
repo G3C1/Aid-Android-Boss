@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +27,8 @@ import com.g3c1.aide.feature_store.presentation.utils.toRequestBody
 import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel
 import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -112,19 +113,24 @@ fun AddStoreScreen(
                         })
                 }
                 AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-                    isLoading.value = true
-                    viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
-                    getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
-                        viewModel.addStore(
-                            name = storeName.value,
-                            description = storeDesCription.value,
-                            imageUrl = viewModel.gerImageUrlRes.value.data!!.imageUrl
-                        )
-                        addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
-                            isLoading.value = false
-                            Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
-                            getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
-                            goBackToStoreListPage()
+                    lifecycleCoroutineScope.launch {
+                        val name = storeName.value
+                        val description = storeDesCription.value
+                        isLoading.value = true
+                        viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
+                        getImageUrlRequest(viewModel, this, context) {
+                            viewModel.addStore(
+                                name = name,
+                                description = description,
+                                imageUrl = viewModel.getImageUrlRes.value.data!!.imageUrl
+                            )
+                            addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
+                                isLoading.value = false
+                                Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                                getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
+                                goBackToStoreListPage()
+                                lifecycleCoroutineScope.cancel()
+                            }
                         }
                     }
                 }
@@ -136,19 +142,18 @@ fun AddStoreScreen(
 
 private fun getImageUrlRequest(
     viewModel: StoreViewModel,
-    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    coroutineScope: CoroutineScope,
     context: Context,
     onSuccess: () -> Unit
 ) {
-    lifecycleCoroutineScope.launch {
-        viewModel.gerImageUrlRes.collect {
+    coroutineScope.launch {
+        viewModel.getImageUrlRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("GetImageUrl", it.data!!.imageUrl)
                     onSuccess()
+                    viewModel.getImageUrlRes.value = ApiState.Loading()
                 }
                 is ApiState.Error -> {
-                    Log.d("GetImageUrl", it.status.toString())
                     Toast.makeText(context, "이미지 용량이 너무 큽니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
@@ -160,19 +165,18 @@ private fun getImageUrlRequest(
 
 private fun addStoreRequest(
     viewModel: StoreViewModel,
-    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    coroutineScope: CoroutineScope,
     context: Context,
     onSuccess: () -> Unit
 ) {
-    lifecycleCoroutineScope.launch {
+    coroutineScope.launch {
         viewModel.addStoreRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("AddStore", it.status.toString())
                     onSuccess()
+                    viewModel.addStoreRes.value = ApiState.Loading()
                 }
                 is ApiState.Error -> {
-                    Log.d("AddStore", it.status.toString())
                     Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
@@ -184,18 +188,17 @@ private fun addStoreRequest(
 
 private fun getMyStoresInfoRequest(
     viewModel: StoreViewModel,
-    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    coroutineScope: CoroutineScope,
     context: Context,
 ) {
     viewModel.getMyStoresInfoRequest()
-    lifecycleCoroutineScope.launch {
+    coroutineScope.launch {
         viewModel.getMyStoresRes.collect { result ->
             when (result) {
                 is ApiState.Success -> {
-                    Log.d("StoreActivity", result.data.toString())
+                    viewModel.getMyStoresRes.value = ApiState.Loading()
                 }
                 is ApiState.Error -> {
-                    Log.d("StoreActivity", result.status.toString())
                     Toast.makeText(
                         context, "알수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT
                     ).show()
