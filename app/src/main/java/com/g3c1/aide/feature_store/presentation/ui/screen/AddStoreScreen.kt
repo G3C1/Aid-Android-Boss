@@ -114,17 +114,16 @@ fun AddStoreScreen(
                 }
                 AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
                     lifecycleCoroutineScope.launch {
-                        val name = storeName.value
-                        val description = storeDesCription.value
                         isLoading.value = true
                         viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
                         getImageUrlRequest(viewModel, this, context) {
                             viewModel.addStore(
-                                name = name,
-                                description = description,
+                                name = storeName.value,
+                                description = storeDesCription.value,
                                 imageUrl = viewModel.getImageUrlRes.value.data!!.imageUrl
                             )
                             addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
+                                viewModel.getMyStoresInfoRequest()
                                 isLoading.value = false
                                 Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
                                 getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
@@ -191,7 +190,6 @@ private fun getMyStoresInfoRequest(
     coroutineScope: CoroutineScope,
     context: Context,
 ) {
-    viewModel.getMyStoresInfoRequest()
     coroutineScope.launch {
         viewModel.getMyStoresRes.collect { result ->
             when (result) {
