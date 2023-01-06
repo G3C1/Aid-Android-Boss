@@ -129,8 +129,8 @@ fun AddStoreScreen(
                                 Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
                                 getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
                                 goBackToStoreListPage()
-                                lifecycleCoroutineScope.cancel()
                             }
+                            this.cancel()
                         }
                     }
                 }
