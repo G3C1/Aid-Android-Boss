@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,15 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.g3c1.aide.feature_store.presentation.ui.components.AddStoreButton
-import com.g3c1.aide.feature_store.presentation.ui.components.AddStorePageTopBar
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreImageField
-import com.g3c1.aide.feature_store.presentation.ui.components.StoreInfoInputField
+import com.g3c1.aide.feature_store.presentation.ui.components.*
 import com.g3c1.aide.feature_store.presentation.utils.getPath
 import com.g3c1.aide.feature_store.presentation.utils.toRequestBody
 import com.g3c1.aide.feature_store.presentation.viewmodel.StoreViewModel
 import com.g3c1.aide.remote.utils.ApiState
 import com.g3c1.aide.ui.theme.PretendardText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -55,95 +53,106 @@ fun AddStoreScreen(
     val storeDesCription = remember {
         mutableStateOf("")
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        AddStorePageTopBar {
-            goBackToStoreListPage()
-        }
+    val isLoading = remember {
+        mutableStateOf(false)
+    }
+    Box {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .background(Color.White)
         ) {
-            Spacer(modifier = Modifier.fillMaxHeight(0.07f))
-            StoreImageField(storeImage.value) {
-                permissionManager(context = context)
-                launcher.launch(MediaStore.Images.Media.CONTENT_TYPE)
+            AddStorePageTopBar {
+                goBackToStoreListPage()
             }
-            Spacer(modifier = Modifier.fillMaxHeight(0.1f))
             Column(
-                Modifier
-                    .fillMaxWidth(0.9f)
-                    .fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PretendardText(
-                    text = "가게 이름을 정해주세요.",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.fillMaxHeight(0.01f))
-                StoreInfoInputField(
-                    text = storeName.value,
-                    hint = "가게 이름",
-                    isDescription = false,
-                    onValueChange = {
-                        storeName.value = it
-                    }
-                )
                 Spacer(modifier = Modifier.fillMaxHeight(0.07f))
-                PretendardText(
-                    text = "가게 설명을 적어주세요.",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.fillMaxHeight(0.01f))
-                StoreInfoInputField(
-                    text = storeDesCription.value,
-                    hint = "가게 설명",
-                    isDescription = true,
-                    onValueChange = {
-                        storeDesCription.value = it
-                    })
-            }
-            AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
-                viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
-                getImageUrlRequest(viewModel, lifecycleCoroutineScope, context) {
-                    viewModel.addStore(
-                        name = storeName.value,
-                        description = storeDesCription.value,
-                        imageUrl = viewModel.gerImageUrlRes.value.data!!.imageUrl
+                StoreImageField(storeImage.value) {
+                    permissionManager(context = context)
+                    launcher.launch(MediaStore.Images.Media.CONTENT_TYPE)
+                }
+                Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+                Column(
+                    Modifier
+                        .fillMaxWidth(0.9f)
+                        .fillMaxWidth()
+                ) {
+                    PretendardText(
+                        text = "가게 이름을 정해주세요.",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
                     )
-                    addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
-                        Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
-                        getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
-                        goBackToStoreListPage()
+                    Spacer(modifier = Modifier.fillMaxHeight(0.01f))
+                    StoreInfoInputField(
+                        text = storeName.value,
+                        hint = "가게 이름",
+                        isDescription = false,
+                        onValueChange = {
+                            storeName.value = it
+                        }
+                    )
+                    Spacer(modifier = Modifier.fillMaxHeight(0.07f))
+                    PretendardText(
+                        text = "가게 설명을 적어주세요.",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
+                    )
+                    Spacer(modifier = Modifier.fillMaxHeight(0.01f))
+                    StoreInfoInputField(
+                        text = storeDesCription.value,
+                        hint = "가게 설명",
+                        isDescription = true,
+                        onValueChange = {
+                            storeDesCription.value = it
+                        })
+                }
+                AddStoreButton(isError = storeImage.value == null || storeName.value.isEmpty() || storeDesCription.value.isEmpty()) {
+                    lifecycleCoroutineScope.launch {
+                        isLoading.value = true
+                        viewModel.getImageUrl(File(storeImage.value!!.getPath(context)!!).toRequestBody())
+                        getImageUrlRequest(viewModel, this, context) {
+                            viewModel.addStore(
+                                name = storeName.value,
+                                description = storeDesCription.value,
+                                imageUrl = viewModel.getImageUrlRes.value.data!!.imageUrl
+                            )
+                            addStoreRequest(viewModel, lifecycleCoroutineScope, context) {
+                                viewModel.getMyStoresInfoRequest()
+                                isLoading.value = false
+                                Toast.makeText(context, "가게 등록에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                                getMyStoresInfoRequest(viewModel, lifecycleCoroutineScope, context)
+                                goBackToStoreListPage()
+                            }
+                            this.cancel()
+                        }
                     }
                 }
             }
         }
     }
+    Progressbar(isLoading.value)
 }
 
 private fun getImageUrlRequest(
     viewModel: StoreViewModel,
-    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    coroutineScope: CoroutineScope,
     context: Context,
     onSuccess: () -> Unit
 ) {
-    lifecycleCoroutineScope.launch {
-        viewModel.gerImageUrlRes.collect {
+    coroutineScope.launch {
+        viewModel.getImageUrlRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("GetImageUrl", it.data!!.imageUrl)
                     onSuccess()
+                    viewModel.getImageUrlRes.value = ApiState.Loading()
                 }
                 is ApiState.Error -> {
-                    Log.d("GetImageUrl", it.status.toString())
                     Toast.makeText(context, "이미지 용량이 너무 큽니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
@@ -155,19 +164,18 @@ private fun getImageUrlRequest(
 
 private fun addStoreRequest(
     viewModel: StoreViewModel,
-    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    coroutineScope: CoroutineScope,
     context: Context,
     onSuccess: () -> Unit
 ) {
-    lifecycleCoroutineScope.launch {
+    coroutineScope.launch {
         viewModel.addStoreRes.collect {
             when (it) {
                 is ApiState.Success -> {
-                    Log.d("AddStore", it.status.toString())
                     onSuccess()
+                    viewModel.addStoreRes.value = ApiState.Loading()
                 }
                 is ApiState.Error -> {
-                    Log.d("AddStore", it.status.toString())
                     Toast.makeText(context, "가게를 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is ApiState.Loading -> {
@@ -179,18 +187,16 @@ private fun addStoreRequest(
 
 private fun getMyStoresInfoRequest(
     viewModel: StoreViewModel,
-    lifecycleCoroutineScope: LifecycleCoroutineScope,
+    coroutineScope: CoroutineScope,
     context: Context,
 ) {
-    viewModel.getMyStoresInfoRequest()
-    lifecycleCoroutineScope.launch {
+    coroutineScope.launch {
         viewModel.getMyStoresRes.collect { result ->
             when (result) {
                 is ApiState.Success -> {
-                    Log.d("StoreActivity", result.data.toString())
+                    viewModel.getMyStoresRes.value = ApiState.Loading()
                 }
                 is ApiState.Error -> {
-                    Log.d("StoreActivity", result.status.toString())
                     Toast.makeText(
                         context, "알수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT
                     ).show()

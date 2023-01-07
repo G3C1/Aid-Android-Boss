@@ -1,7 +1,6 @@
 package com.g3c1.aide.feature_store.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,7 +36,6 @@ class StoreActivity: ComponentActivity() {
             storeViewModel.getMyStoresRes.collect { result ->
                 when (result) {
                     is ApiState.Success -> {
-                        Log.d("StoreActivity", result.data.toString())
                         setContent {
                             val navController = rememberNavController()
                             Column(modifier = Modifier.fillMaxSize()) {
@@ -48,7 +46,7 @@ class StoreActivity: ComponentActivity() {
                                     composable("SellectStoreScreen") {
                                         SelectStoreScreen(
                                             bossName = result.data!!.userName,
-                                            storeList = result.data.storeList
+                                            storeList = result.data.storeList,
                                         ) {
                                             navController.navigate("StoreAddScreen") {
                                                 popUpTo("StoreAddScreen") {
@@ -75,7 +73,6 @@ class StoreActivity: ComponentActivity() {
                         }
                     }
                     is ApiState.Error -> {
-                        Log.d("StoreActivity", result.status.toString())
                         Toast.makeText(
                             this@StoreActivity, "알수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT
                         ).show()

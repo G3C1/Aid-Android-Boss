@@ -26,7 +26,7 @@ class StoreViewModel @Inject constructor(
     val getMyStoresRes: MutableStateFlow<ApiState<MyStoresInfoDTO>> =
         MutableStateFlow(ApiState.Loading())
 
-    val gerImageUrlRes: MutableStateFlow<ApiState<ImageUrlDTO>> =
+    val getImageUrlRes: MutableStateFlow<ApiState<ImageUrlDTO>> =
         MutableStateFlow(ApiState.Loading())
 
     val addStoreRes: MutableStateFlow<ApiState<Unit>> =
@@ -43,22 +43,21 @@ class StoreViewModel @Inject constructor(
     }
 
     fun getImageUrl(file: MultipartBody.Part) = viewModelScope.launch {
-        gerImageUrlRes.value = ApiState.Loading()
+        getImageUrlRes.value = ApiState.Loading()
         getImageUrlUseCase.getImageUrl(file)
             .catch {
                 Log.d("GetImageUrl", "body: ${it.message}")
             }.collect { value ->
-                gerImageUrlRes.value = value
+                getImageUrlRes.value = value
             }
     }
 
     fun addStore(name: String, description: String, imageUrl: String) = viewModelScope.launch {
+        Log.d("sibal", "$name, $description, $imageUrl")
         addStoreRes.value = ApiState.Loading()
         addStoreUseCase.addStore(
             StoreInfoDTO(
-                name = name,
-                description = description,
-                img = imageUrl
+                name = name, description = description, img = imageUrl
             )
         ).catch {
             Log.d("AddStore", "body: ${it.message}")
